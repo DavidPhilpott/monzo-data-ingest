@@ -1,5 +1,7 @@
 import requests
 import json
+from monzo import Monzo
+import pandas as pd
 
 TOKEN_FILE_PATH = "tokens.json"
 
@@ -12,6 +14,7 @@ class APIClient():
         return
 
     def post(self, api_url: str, api_parameters: str):
+        print([api_url, api_parameters])
         return requests.post(url=api_url, data=api_parameters)
 
 
@@ -41,9 +44,11 @@ def refresh_auth_token(api_client, client_id, client_secret, refresh_token):
 
     new_tokens = {'access_token': json.loads(r)['access_token'],
                   'refresh_token': json.loads(r)['refresh_token']}
+    print(new_tokens)
     return new_tokens
 
 
+#TODO: Replace this with a useful access tester (e.g. whoami) which works. Currently this is borken becuase its for exhanging oauth permission for access token, but im trying to give it an access token
 def test_access(api_client, client_id, client_secret, access_token):
     api_url = 'https://api.monzo.com/oauth2/token'
     parameters = {'grant_type': 'authorization_code',
@@ -53,6 +58,7 @@ def test_access(api_client, client_id, client_secret, access_token):
                   'code': access_token}
     r = api_client.post(api_url=api_url, api_parameters=parameters)
     result_test = r.text
+    print (result_test)
     return result_test
 
 
@@ -64,7 +70,7 @@ client_secret = token_set['client_secret']
 refresh_token = token_set['refresh_token']
 access_token = token_set['access_token']
 
-
+print(token_set)
 result_test = test_access(api_client=api_client,
                           client_id=client_id,
                           client_secret=client_secret,
@@ -86,4 +92,12 @@ if 'error' in response_dict.keys():
 
         write_tokens(TOKEN_FILE_PATH, tokens_to_write=new_token_set)
 
-print(response_dict["code"])
+print(response_dict)
+
+client = Monzo(access_token)
+account_id = 'acc_00009SATp8BnGi4s8IMfE9' # Get the ID of the first account linked to the access token
+print(account_id)
+balance = client.get_balance(account_id) # Get your balance object
+print(balance['balance']) # 100000000000
+print(balance['currency']) # GBP
+print(balance['spend_today']) # 2000
