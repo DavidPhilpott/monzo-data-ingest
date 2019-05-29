@@ -18,7 +18,10 @@ class APIClient():
         return requests.post(url=api_url, data=api_parameters)
 
 
-def read_tokens(token_file_path):
+def read_tokens(token_file_path: str) -> dict:
+    """
+    Read in the credential tokens and return them as a dict
+    """
     token_file = open(token_file_path, "r")
     token_contents = token_file.read()
     tokens = json.loads(token_contents)
@@ -26,7 +29,10 @@ def read_tokens(token_file_path):
     return tokens
 
 
-def write_tokens(token_file_path, tokens_to_write):
+def write_tokens(token_file_path: str, tokens_to_write: dict) -> None:
+    """
+    Read in a dict of tokens and write them to a file
+    """
     token_file = open(token_file_path, "w")
     token_file.write(json.dumps(tokens_to_write))
     token_file.close()
@@ -95,9 +101,21 @@ if 'error' in response_dict.keys():
 print(response_dict)
 
 client = Monzo(access_token)
-account_id = 'acc_00009SATp8BnGi4s8IMfE9' # Get the ID of the first account linked to the access token
+account_list = client.get_accounts()['accounts']
+for account in account_list:
+    if account['closed'] is False:
+        account_id = account['id']
+    print('id: %s, closed: %s' %(account['id'], account['closed']))
+
 print(account_id)
+
 balance = client.get_balance(account_id) # Get your balance object
 print(balance['balance']) # 100000000000
 print(balance['currency']) # GBP
 print(balance['spend_today']) # 2000
+
+transactions = client.get_transactions(account_id)
+print(transactions)
+
+pots = client.get_pots()['pots']
+print(pots)
