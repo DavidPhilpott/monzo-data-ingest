@@ -56,7 +56,7 @@ def refresh_auth_token(api_client, token_set):
     return new_tokens
 
 
-def test_valid_access_key(monzo_client):
+def valid_access_key(monzo_client):
     access_test = monzo_client.whoami()
     return access_test['authenticated']
 
@@ -65,7 +65,7 @@ token_set = read_tokens(token_file_path=TOKEN_FILE_PATH)
 access_key = token_set['access_key']
 
 monzo = Monzo(access_key)
-if test_valid_access_key(monzo_client=monzo) is False:
+if valid_access_key(monzo_client=monzo) is False:
     api_client = APIClient()
     new_tokens = refresh_auth_token(api_client=api_client,
                                     token_set=token_set)
