@@ -1,7 +1,6 @@
 import requests
 import json
 from monzo import Monzo
-import pandas as pd
 
 TOKEN_FILE_PATH = "tokens.json"
 

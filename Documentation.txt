@@ -1,0 +1,10 @@
+
+First step: get an authorisation token. Need to send:
+"https://auth.monzo.com/?
+    client_id=$client_id&
+    redirect_uri=$redirect_uri&
+    response_type=code&
+    state=$state_token"
+where state token is a random string
+
+https://auth.monzo.com/?client_id=oauth2client_00009jNbjw1TBhb75yrnlZ&redirect_uri=http://localhost:2020&response_type=code&state=asdsdfnvjdjndcnsi

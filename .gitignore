@@ -1,5 +1,6 @@
 tokens.json
 secrets.json
+oauth_client_information.json
 venv/
 .idea/
 temp_token_swap.json
