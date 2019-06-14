@@ -2,3 +2,5 @@ tokens.json
 secrets.json
 venv/
 .idea/
+temp_token_swap.json
+temp_tokens.txt
