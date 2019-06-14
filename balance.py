@@ -14,7 +14,7 @@ class APIClient():
         return
 
     def post(self, api_url: str, api_parameters: str):
-        print([api_url, api_parameters])
+        #print([api_url, api_parameters])
         return requests.post(url=api_url, data=api_parameters)
 
 
@@ -50,48 +50,63 @@ def refresh_auth_token(api_client, token_set):
                       'refresh_token': refresh_token}
 
     r = api_client.post(api_url=api_url, api_parameters=refresh_params)
+    print(r.text)
 
-    new_tokens = {'access_key': json.loads(r)['access_token'],
-                  'refresh_token': json.loads(r)['refresh_token']}
+    token_file = open("temp_token_swap.json", "w")
+    token_file.write(json.dumps(r.text))
+    token_file.close()
+
+    proc_response = json.loads(r.text)
+    new_tokens = {'access_key': proc_response['access_token'],
+                  'refresh_token': proc_response['refresh_token']}
     return new_tokens
 
 
 def valid_access_key(monzo_client):
-    access_test = monzo_client.whoami()
-    return access_test['authenticated']
+    try:
+        access_test = monzo_client.whoami()
+        return access_test['authenticated']
+    except Exception as e:
+        return False
 
 
-token_set = read_tokens(token_file_path=TOKEN_FILE_PATH)
-access_key = token_set['access_key']
 
-monzo = Monzo(access_key)
-if valid_access_key(monzo_client=monzo) is False:
-    api_client = APIClient()
-    new_tokens = refresh_auth_token(api_client=api_client,
-                                    token_set=token_set)
-    new_token_set = {'client_id': token_set['client_id'],
-                     'client_secret': token_set['client_secret'],
-                     'refresh_token': new_tokens['refresh_token'],
-                     'access_key': new_tokens['access_key']}
 
-    write_tokens(TOKEN_FILE_PATH, tokens_to_write=new_token_set)
+def main():
+    token_set = read_tokens(token_file_path=TOKEN_FILE_PATH)
+    access_key = token_set['access_key']
+
     monzo = Monzo(access_key)
+    if valid_access_key(monzo_client=monzo) is False:
+        api_client = APIClient()
+        new_tokens = refresh_auth_token(api_client=api_client,
+                                        token_set=token_set)
+        new_token_set = {'client_id': token_set['client_id'],
+                         'client_secret': token_set['client_secret'],
+                         'refresh_token': new_tokens['refresh_token'],
+                         'access_key': new_tokens['access_key']}
 
-account_list = monzo.get_accounts()['accounts']
-for account in account_list:
-    if account['closed'] is False:
-        account_id = account['id']
-    print('id: %s, closed: %s' %(account['id'], account['closed']))
+        write_tokens(TOKEN_FILE_PATH, tokens_to_write=new_token_set)
+        monzo = Monzo(new_tokens['access_key'])
 
-print(account_id)
+    account_list = monzo.get_accounts()['accounts']
+    for account in account_list:
+        if account['closed'] is False:
+            account_id = account['id']
+        print('id: %s, closed: %s' %(account['id'], account['closed']))
 
-balance = monzo.get_balance(account_id) # Get your balance object
-print(balance['balance']) # 100000000000
-print(balance['currency']) # GBP
-print(balance['spend_today']) # 2000
+    print(account_id)
 
-transactions = monzo.get_transactions(account_id)
-print(transactions)
+    balance = monzo.get_balance(account_id) # Get your balance object
+    print(balance['balance']) # 100000000000
+    print(balance['currency']) # GBP
+    print(balance['spend_today']) # 2000
 
-pots = monzo.get_pots()['pots']
-print(pots)
+    transactions = monzo.get_transactions(account_id)
+    print(transactions)
+
+    pots = monzo.get_pots()['pots']
+    print(pots)
+    return
+
+main()
