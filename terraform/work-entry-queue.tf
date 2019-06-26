@@ -6,7 +6,7 @@ resource "aws_sqs_queue" "work_entry_queue" {
 
   tags = merge(
     {
-      "Name" = aws_sqs_queue.work_entry_queue.name
+      "Name" = "monzo-data-ingest-inbound-work"
     },
     local.common_tags
   )
@@ -35,4 +35,10 @@ resource "aws_sqs_queue_policy" "work_entry_queue_policy" {
   ]
 }
 POLICY
+}
+
+resource "aws_sns_topic_subscription" "sub-core-sns-to-monzo-work-entry-queue" {
+  topic_arn = "arn:aws:sns:us-west-2:${aws_account_id}:core-message-inbox"
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.work_entry_queue.arn
 }

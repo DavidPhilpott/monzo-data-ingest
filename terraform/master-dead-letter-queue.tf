@@ -4,7 +4,7 @@ resource "aws_sqs_queue" "master_dead_letter_queue" {
 
   tags = merge(
     {
-      "Name" = aws_sqs_queue.master_dead_letter_queue.name
+      "Name" = "monzo-data-ingest-dead-letter-queue"
     },
     local.common_tags
   )
