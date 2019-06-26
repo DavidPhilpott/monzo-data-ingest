@@ -1,6 +1,7 @@
 resource "aws_sfn_state_machine" "sfn_state_machine" {
   name     = "monzo-data-ingest-state-machine"
   role_arn = aws_iam_policy.step_function_policy.arn
+  depends_on = aws_iam_policy.step_function_policy
 
   tags = merge(
     {
