@@ -10,6 +10,10 @@ variable environment {
   type = string
 }
 
+variable region {
+  type = string
+}
+
 locals {
   common_tags = {
       "Project"     = var.project
