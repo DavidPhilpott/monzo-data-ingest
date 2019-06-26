@@ -11,7 +11,7 @@ resource "aws_sqs_queue" "master_dead_letter_queue" {
 }
 
 resource "aws_sqs_queue_policy" "master_dead_letter_queue_policy" {
-  queue_url = aws_sqs_queue.master_dead_letter_queue_policy.id
+  queue_url = aws_sqs_queue.master_dead_letter_queue.id
 
   policy = <<POLICY
 {
