@@ -27,8 +27,7 @@ EOF
 
 
 resource "aws_iam_policy" "step_function_policy" {
-  name        = "step-function"
-  path        = "/monzo-data-ingest/"
+  name        = "monzo-data-ingest-step-function-policy"
   description = "Policy for the step function powering most of the monzo-data-ingest pipeline."
 
   policy = <<EOF
