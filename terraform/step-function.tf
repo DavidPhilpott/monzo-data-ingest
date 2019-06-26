@@ -30,13 +30,6 @@ resource "aws_iam_policy" "step_function_policy" {
   path        = "/monzo-data-ingest/"
   description = "Policy for the step function powering most of the monzo-data-ingest pipeline."
 
-  tags = merge(
-    {
-      "Name" = "monzo-data-ingest-step-function-policy"
-    },
-    local.common_tags
-  )
-
   policy = <<EOF
 {
   "Version": "2012-10-17",
