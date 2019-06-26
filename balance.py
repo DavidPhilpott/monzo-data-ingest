@@ -2,7 +2,7 @@ import requests
 import json
 from monzo import Monzo
 
-TOKEN_FILE_PATH = "tokens.json"
+CLIENT_INFORMATION_PATH = "oauth_client_information.json"
 
 
 class APIClient():
@@ -15,6 +15,8 @@ class APIClient():
     def post(self, api_url: str, api_parameters: str):
         #print([api_url, api_parameters])
         return requests.post(url=api_url, data=api_parameters)
+
+
 
 
 def read_tokens(token_file_path: str) -> dict:
@@ -62,11 +64,35 @@ def refresh_auth_token(api_client, token_set):
 
 
 def valid_access_key(monzo_client):
+<<<<<<< Updated upstream
     try:
         access_test = monzo_client.whoami()
         return access_test['authenticated']
     except Exception as e:
         return False
+=======
+    access_test = monzo_client.whoami()
+    return access_test['authenticated']
+
+
+"""
+print("Running")
+token_set = read_tokens(token_file_path=TOKEN_FILE_PATH)
+access_key = token_set['access_key']
+
+monzo = Monzo(access_key)
+if valid_access_key(monzo_client=monzo) is False:
+    api_client = APIClient()
+    new_tokens = refresh_auth_token(api_client=api_client,
+                                    token_set=token_set)
+    new_token_set = {'client_id': token_set['client_id'],
+                     'client_secret': token_set['client_secret'],
+                     'refresh_token': new_tokens['refresh_token'],
+                     'access_key': new_tokens['access_key']}
+
+    write_tokens(TOKEN_FILE_PATH, tokens_to_write=new_token_set)
+    monzo = Monzo(access_key)
+>>>>>>> Stashed changes
 
 
 
@@ -108,4 +134,10 @@ def main():
     print(pots)
     return
 
+<<<<<<< Updated upstream
 main()
+=======
+pots = monzo.get_pots()['pots']
+print(pots)
+"""
+>>>>>>> Stashed changes
