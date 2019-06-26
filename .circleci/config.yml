@@ -1,0 +1,117 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
+
+set_environment: &set_environment
+  run:
+    name: Setting Environmental Variables
+    command: |
+      cd && touch $BASH_ENV
+      echo 'export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY' >> $BASH_ENV
+      echo 'export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY' >> $BASH_ENV
+
+base_image: &base_image
+  hashicorp/terraform:0.12.2
+
+working_directory: &working_directory
+  ~/working
+
+default_config: &default_config
+  docker:
+    - image: *base_image
+  working_directory: *working_directory
+  environment:
+    BASH_ENV: /root/.bashrc
+
+repo_cache_key: &repo_cache_key
+  v1-repo-{{ .Branch }}-{{ .Revision }}
+
+restore_repo: &restore_repo
+  restore_cache:
+    key: *repo_cache_key
+
+save_repo: &save_repo
+  save_cache:
+    key: *repo_cache_key
+    paths:
+      - *working_directory
+
+terraform_init: &terraform_init
+  run:
+    name: Running Terraform Init
+    command: |
+      mkdir -p ~/.ssh && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+      source $BASH_ENV
+      cd terraform
+      ls -ltr
+      terraform init
+
+terraform_plan: &terraform_plan
+  run:
+    name: Running Terraform Plan
+    command: |
+      source $BASH_ENV
+      pwd && ls -ltr
+      cd terraform
+      terraform plan -out=terraform.plan
+
+terraform_apply: &terraform_apply
+  run:
+    name: Running Terraform Apply
+    command: |
+      source $BASH_ENV
+      cd terraform
+      terraform apply terraform.plan
+
+terraform_destroy: &terraform_destroy
+  run:
+    name: Running Terraform Destroy
+    command: |
+      source $BASH_ENV
+      cd terraform
+      terraform destroy -auto-approve
+
+jobs:
+  run-terraform-plan:
+    <<: *default_config
+    steps:
+      - checkout
+      - *set_environment
+      - *save_repo
+      - *terraform_init
+      - *terraform_plan
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - terraform/terraform.plan
+
+  run-terraform-apply:
+      <<: *default_config
+      steps:
+        - *restore_repo
+        - *set_environment
+        - attach_workspace:
+            at: *working_directory
+        - *terraform_init
+        - *terraform_apply
+
+  run-terraform-destroy:
+      <<: *default_config
+      steps:
+        - *set_environment
+        - *restore_repo
+        - *terraform_init
+        - *terraform_destroy
+
+workflows:
+  version: 1
+  deploy-infra: 
+    jobs:
+      - run-terraform-plan
+      - run-terraform-apply:
+          requires:
+            - run-terraform-plan
+#      - run-terraform-destroy:
+#          requires:
+#            - run-terraform-apply#
