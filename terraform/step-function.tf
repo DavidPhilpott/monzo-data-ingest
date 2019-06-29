@@ -1,7 +1,6 @@
 resource "aws_sfn_state_machine" "sfn_state_machine" {
   name     = "monzo-data-ingest-state-machine"
-  role_arn = "${aws_iam_role.iam_for_sfn.arn}"
-  depends_on = [aws_iam_policy.step_function_policy]
+  role_arn = aws_iam_role.iam_for_sf.arn
 
   tags = merge(
     {
@@ -74,46 +73,14 @@ EOF
 }
 
 
+resource "aws_iam_role" "iam_for_sf" {
+  name = "monzo-data-ingest-sf-role"
 
-
-
-
-
-
-resource "aws_iam_role" "iam_for_lambda" {
-  name = "tf-iam_for_lambda"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+  assume_role_policy = data.aws_iam_policy_document.sf_assume_role_policy_document.json
 }
 
 
-
-
-
-resource "aws_iam_role" "iam_for_sfn" {
-  name = "tf-iam_for_sfn"
-
-  assume_role_policy = "${data.aws_iam_policy_document.sfn_assume_role_policy_document.json}"
-}
-
-
-
-// Assume role policy document
-data "aws_iam_policy_document" "sfn_assume_role_policy_document" {
+data "aws_iam_policy_document" "sf_assume_role_policy_document" {
 
   statement {
     actions = [
@@ -130,11 +97,9 @@ data "aws_iam_policy_document" "sfn_assume_role_policy_document" {
   }
 }
 
-
-
-resource "aws_iam_role_policy" "lambda-execution" {
-  name        = "tf-lambda-execution"
-  role   = "${aws_iam_role.iam_for_sfn.id}"
+resource "aws_iam_role_policy" "sf_lambda_execution" {
+  name = "monzo-data-ingest-sf-lambda-execution"
+  role = aws_iam_role.iam_for_sf.id
 
   policy = <<EOF
 {
