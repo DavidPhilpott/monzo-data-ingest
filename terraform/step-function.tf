@@ -1,4 +1,4 @@
-resource "aws_sfn_state_machine" "sfn_state_machine" {
+resource "aws_sfn_state_machine" "sf_state_machine" {
   name     = "monzo-data-ingest-state-machine"
   role_arn = aws_iam_role.iam_for_sf.arn
 
@@ -23,32 +23,6 @@ resource "aws_sfn_state_machine" "sfn_state_machine" {
 }
 EOF
 }
-
-#resource "aws_iam_role" "step_function_role" {
-#  name = "monzo-data-ingest-step-function-role"
-#
-#  assume_role_policy = aws_iam_policy.step_function_policy_document
-#}
-
-
-
-// Assume role policy document
-#data "aws_iam_policy_document" "sfn_assume_role_policy_document" {
-#
-#  statement {
-#    actions = [
-#      "sts:AssumeRole"
-#    ]
-#
-#    principals {
-#      type = "Service"
-#      identifiers = [
-#        "states.eu-west-1.amazonaws.com",
-#        "events.amazonaws.com"
-#      ]
-#    }
-#  }
-#}
 
 resource "aws_iam_policy" "step_function_policy" {
   name        = "monzo-data-ingest-step-function-policy"
