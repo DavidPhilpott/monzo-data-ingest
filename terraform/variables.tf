@@ -20,3 +20,11 @@ locals {
       "Environment" = var.environment
     }
 }
+
+variable client_id {
+  type = string
+}
+
+variable redirect_uri {
+  type = string
+}

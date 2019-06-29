@@ -13,10 +13,13 @@ resource "aws_lambda_function" "check_valid_auth_tokens" {
 
   environment {
     variables = {
-      foo = "bar"
+      client_id_parameter = aws_ssm_parameter.client_id.name
+      client_secret_parameter = aws_ssm_parameter.secret_id.name
+      redirect_uri_parameter = aws_ssm_parameter.redirect_uri.name
+      access_key_parameter = aws_ssm_parameter.access_key.name
+      refresh_token_parameter = aws_ssm_parameter.refresh_token.name
     }
   }
-
   tags = merge(
     {
       "Name" = "monzo-data-ingest-check-valid-auth-tokens"

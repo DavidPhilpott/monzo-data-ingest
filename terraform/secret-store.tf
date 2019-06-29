@@ -2,7 +2,7 @@ resource "aws_ssm_parameter" "client_id" {
   name        = "monzo-data-ingest-client-id"
   description = "Client ID of the Monzo app which will be used to access the API."
   type        = "String"
-  value       = "xyz"
+  value       = var.client_id
   
   tags = merge(
     {
@@ -16,7 +16,7 @@ resource "aws_ssm_parameter" "redirect_uri" {
   name        = "monzo-data-ingest-redirect-uri"
   description = "Redirect URI that the monzo app is allowed to feed back to."
   type        = "String"
-  value       = "xyz"
+  value       = var.redirect_uri
   
   tags = merge(
     {
