@@ -26,7 +26,7 @@ resource "aws_ssm_parameter" "redirect_uri" {
   )
 }
 
-resource "aws_ssm_parameter" "secret_id" {
+resource "aws_ssm_parameter" "client_secret_id" {
   name        = "monzo-data-ingest-client-secret-id"
   description = "Secret ID of the Monzo app which will be used to access the API."
   type        = "SecureString"
