@@ -25,11 +25,11 @@ resource "aws_sfn_state_machine" "sfn_state_machine" {
 EOF
 }
 
-resource "aws_iam_role" "step_function_role" {
-  name = "monzo-data-ingest-step-function-role"
-
-  assume_role_policy = aws_iam_policy.step_function_policy_document
-}
+#resource "aws_iam_role" "step_function_role" {
+#  name = "monzo-data-ingest-step-function-role"
+#
+#  assume_role_policy = aws_iam_policy.step_function_policy_document
+#}
 
 
 
@@ -100,25 +100,8 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
-resource "aws_iam_role_policy" "dynamoDB-put" {
-  name        = "tf-dynamoDB-put"
-  role   = "${aws_iam_role.iam_for_lambda.id}"
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "dynamoDB:putItem"
-      ],
-      "Effect": "Allow",
-      "Resource": "${aws_dynamodb_table.calculator-db.arn}"
-    }
-  ]
-}
-EOF
-}
+
 
 
 resource "aws_iam_role" "iam_for_sfn" {
