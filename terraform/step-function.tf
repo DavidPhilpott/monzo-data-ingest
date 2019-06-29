@@ -34,22 +34,22 @@ resource "aws_iam_role" "step_function_role" {
 
 
 // Assume role policy document
-data "aws_iam_policy_document" "sfn_assume_role_policy_document" {
-
-  statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-
-    principals {
-      type = "Service"
-      identifiers = [
-        "states.eu-west-1.amazonaws.com",
-        "events.amazonaws.com"
-      ]
-    }
-  }
-}
+#data "aws_iam_policy_document" "sfn_assume_role_policy_document" {
+#
+#  statement {
+#    actions = [
+#      "sts:AssumeRole"
+#    ]
+#
+#    principals {
+#      type = "Service"
+#      identifiers = [
+#        "states.eu-west-1.amazonaws.com",
+#        "events.amazonaws.com"
+#      ]
+#    }
+#  }
+#}
 
 resource "aws_iam_policy" "step_function_policy" {
   name        = "monzo-data-ingest-step-function-policy"
