@@ -28,3 +28,10 @@ variable client_id {
 variable redirect_uri {
   type = string
 }
+
+
+## Lambdas
+
+variable logging_level {
+  type = string
+}
