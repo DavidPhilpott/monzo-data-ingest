@@ -73,7 +73,7 @@ terraform_destroy: &terraform_destroy
       terraform destroy -auto-approve
 
 jobs:
-  build_lambda:
+  build-lambda:
       docker:
         - image: lambci/lambda:build-python3.6
       steps:
@@ -127,8 +127,10 @@ workflows:
   version: 1
   deploy-infra-and-app: 
     jobs:
-      - build_lambda
-      - run-terraform-plan
+      - build-lambda
+      - run-terraform-plan:
+          requires:
+            - build-lambda
       - run-terraform-apply:
           requires:
             - run-terraform-plan
