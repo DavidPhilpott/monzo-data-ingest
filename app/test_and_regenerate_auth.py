@@ -1,6 +1,8 @@
 import boto3
 import os
 import logging
+import requests
+from monzo import Monzo
 
 
 def set_logger_level(log):
@@ -34,8 +36,43 @@ def get_ssm_parameter_value(parameter_name):
     parameter_info = ssm_client.get_parameter(Name=parameter_env, WithDecryption=True)
     logger.debug("Returned parameter_info dictionary. Seeking ['Parameter']['Value'].")
     parameter_value = parameter_info['Parameter']['Value']
-    logger.debug("Value found. Returning...")
+    logger.info("Value found. Returning...")
     return parameter_value
+
+
+def authorisation_test(access_key):
+    """Submit a request to monzo whoami. Return true if monzo allows access, false otherwise"""
+    logger.info("Testing access to Monzo.")
+    logger.debug("Creating test Monzo client.")
+    test_monzo_client = Monzo(access_key)
+    try:
+        logger.debug("Making request to whoami API.")
+        access_test = test_monzo_client.whoami()
+        result = access_test['authenticated']
+        logger.debug("Recieved authorisation result '%s'" % result)
+
+    except Exception as e:
+        logger.warn("e.message", exc_info=False)
+        logger.debug("Setting result to 'False' by default.")
+        result = False
+        continue
+    return result
+
+
+def refresh_auth_token(client_id, client_secret_id, refresh_token):
+    """Submit refresh token to monzo in echange for a new access key and refresh token"""
+    logger.info("Exchanging refresh token with Monzo.")
+    api_url = 'https://api.monzo.com/oauth2/token'
+    refresh_params = {'grant_type': 'refresh_token',
+                      'client_id': client_id,
+                      'client_secret': client_secret_id,
+                      'refresh_token': refresh_token}
+    logging.debug("Submitting to '%s'" % api_url)
+    #raw_result = requests.post(url=api_url, data=refresh_params)
+    logging.debug("Received result. Parsing JSON.")
+    #result = json.loads(raw_result.text)
+    logging.debug("Returning access_token and refresh_token.")
+    return "a", "b"#result['access_token'], result['refresh_token']
 
 
 def main(event, context):
@@ -50,4 +87,13 @@ def main(event, context):
     redirect_uri = get_ssm_parameter_value(parameter_name='redirect_uri_parameter')
     access_key = get_ssm_parameter_value(parameter_name='access_key_parameter')
     refresh_token = get_ssm_parameter_value(parameter_name='refresh_token_parameter')
+    logger.info("Finished getting parameter values.")
+
+    logger.info("-- Testing Current Access Keys --")
+    if authorisation_test(access_key) is False:
+        logger.info("Authorisation test FAILED. Keys need to be refreshed.")
+        logger.info("-- Refreshing Keys --")
+        new_access_key, new_refresh_token = refresh_access_key(client_id, client_secret_id, refresh_token)
+    else:
+        logger.info("Authorisation test PASSED. Keys do not need to be refreshed.")
     return
