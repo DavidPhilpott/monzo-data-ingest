@@ -65,6 +65,7 @@ data "aws_iam_policy_document" "monzo_lambda_ec2_policy_document" {
     resources = [
       "*"
     ]
+  } 
 }
 
 resource "aws_iam_role_policy" "monzo_lambda_ec2_policy" {
@@ -82,7 +83,6 @@ data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
 }
 
 resource "aws_iam_role_policy" "monzo_lambda_custom_policy" {
-  count = length(var.lambda_iam_actions) > 0 && length(var.lambda_iam_resources) > 0 ? 1 : 0
-
   role   = aws_iam_role.iam_role_check_valid_auth_tokens_lambda.id
   policy = data.aws_iam_policy_document.monzo_lambda_custom_policy_document.json
+}
