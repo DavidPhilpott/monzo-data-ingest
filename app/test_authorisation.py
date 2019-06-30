@@ -1,6 +1,7 @@
 import boto3
 import os
 import logging
+import requests
 from monzo import Monzo
 
 
@@ -42,14 +43,14 @@ def get_ssm_parameter_value(parameter_name):
 def authorisation_test(access_key):
     """Submit a request to monzo whoami. Return true if monzo allows access, false otherwise"""
     logger.info("Testing access to Monzo.")
-    logger.debug("Creating test Monzo client.")
-    test_monzo_client = Monzo(access_key)
+    api_url = r'https://api.monzo.com/ping/whoami'
+    test_params = {'access_key': access_key}
     try:
         logger.debug("Making request to whoami API.")
-        access_test = test_monzo_client.whoami()
+        logger.debug("URL: %s, Parameters: %s" % (api_url, test_params))
+        access_test = requests.post(url=api_url, data=test_params)
         result = access_test['authenticated']
         logger.debug("Received authorisation result '%s'" % result)
-
     except Exception as e:
         logger.warning(e, exc_info=False)
         logger.debug("Setting result to 'False' by default.")
