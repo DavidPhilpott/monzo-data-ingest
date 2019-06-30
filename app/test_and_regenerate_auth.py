@@ -39,7 +39,7 @@ def get_ssm_parameter_value(parameter_name):
 
 
 def main(event, context):
-    print("Instantiating logger.")
+    print("-- Instantiating logger --")
     global logger
     logger = logging.getLogger(__name__)
     set_logger_level(logger)
