@@ -94,11 +94,11 @@ zip_requirements_package: &zip_requirements_package
   run:
     name: Zip Requirements Package
     command: |
-      mkdir requirements
+      mkdir build/python/lib/python3.7/site-packages
       source venv/bin/activate
-      shopt -s dotglob # Ensure the 'mv' command picks up dot-prefixed files and directories
-      mv venv/lib/python3.7/site-packages/* requirements/
-      cd requirements
+      shopt -s dotglob
+      mv venv/lib/python3.7/site-packages/* build/python/lib/python3.7/site-packages/
+      cd build
       zip -r9 ../app/requirements.zip .
 
 zip_app_package: &zip_app_package
