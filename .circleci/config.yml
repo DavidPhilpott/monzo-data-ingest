@@ -116,8 +116,6 @@ jobs:
           name: location test
           command: |
             ls
-            cd ..
-            ls
             cd app
             ls
             cd ..
