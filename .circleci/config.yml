@@ -37,7 +37,7 @@ save_repo: &save_repo
     paths:
       - *working_directory
 
-terraform_init: &terraform_init
+run_terraform_init: &run_terraform_init
   run:
     name: Running Terraform Init
     command: |
@@ -47,7 +47,7 @@ terraform_init: &terraform_init
       ls -ltr
       terraform init
 
-terraform_plan: &terraform_plan
+run_terraform_plan: &run_terraform_plan
   run:
     name: Running Terraform Plan
     command: |
@@ -56,7 +56,7 @@ terraform_plan: &terraform_plan
       cd terraform
       terraform plan -out=terraform.plan
 
-terraform_apply: &terraform_apply
+run_terraform_apply: &run_terraform_apply
   run:
     name: Running Terraform Apply
     command: |
@@ -64,7 +64,7 @@ terraform_apply: &terraform_apply
       cd terraform
       terraform apply terraform.plan
 
-terraform_destroy: &terraform_destroy
+run_terraform_destroy: &run_terraform_destroy
   run:
     name: Running Terraform Destroy
     command: |
@@ -92,48 +92,48 @@ jobs:
             paths:
               - app.zip
 
-  run-terraform-plan:
+  terraform-plan:
     <<: *default_config
     steps:
       - checkout
       - *set_environment
       - *save_repo
-      - *terraform_init
-      - *terraform_plan
+      - *run_terraform_init
+      - *run_terraform_plan
       - persist_to_workspace:
           root: *working_directory
           paths:
             - terraform/terraform.plan
 
-  run-terraform-apply:
+  terraform-apply:
       <<: *default_config
       steps:
         - *restore_repo
         - *set_environment
         - attach_workspace:
             at: *working_directory
-        - *terraform_init
-        - *terraform_apply
+        - *run_terraform_init
+        - *run_terraform_apply
 
-  run-terraform-destroy:
+  terraform-destroy:
       <<: *default_config
       steps:
         - *set_environment
         - *restore_repo
-        - *terraform_init
-        - *terraform_destroy
+        - *run_terraform_init
+        - *run_terraform_destroy
 
 workflows:
   version: 1
   deploy-infra-and-app: 
     jobs:
       - build-lambda
-      - run-terraform-plan:
+      - terraform-plan:
           requires:
             - build-lambda
-      - run-terraform-apply:
+      - terraform-apply:
           requires:
-            - run-terraform-plan
-#      - run-terraform-destroy:
+            - terraform-plan
+#      - terraform-destroy:
 #          requires:
-#            - run-terraform-apply
+#            - terraform-apply
