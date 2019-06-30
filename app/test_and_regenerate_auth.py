@@ -49,17 +49,17 @@ def authorisation_test(access_key):
         logger.debug("Making request to whoami API.")
         access_test = test_monzo_client.whoami()
         result = access_test['authenticated']
-        logger.debug("Recieved authorisation result '%s'" % result)
+        logger.debug("Received authorisation result '%s'" % result)
 
     except Exception as e:
-        logger.warn("e.message", exc_info=False)
+        logger.warning(e.message, exc_info=False)
         logger.debug("Setting result to 'False' by default.")
         result = False
-        continue
+        pass
     return result
 
 
-def refresh_auth_token(client_id, client_secret_id, refresh_token):
+def refresh_access_key(client_id, client_secret_id, refresh_token):
     """Submit refresh token to monzo in echange for a new access key and refresh token"""
     logger.info("Exchanging refresh token with Monzo.")
     api_url = 'https://api.monzo.com/oauth2/token'
