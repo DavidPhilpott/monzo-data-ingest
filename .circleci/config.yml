@@ -112,6 +112,16 @@ jobs:
       - checkout
       - *set_environment
       - *save_repo
+      - run:
+          name: location test
+          command: |
+            ls
+            cd ..
+            ls
+            cd app
+            ls
+            cd ..
+            cd terraform
       - *run_terraform_init
       - *run_terraform_plan
       - persist_to_workspace:
