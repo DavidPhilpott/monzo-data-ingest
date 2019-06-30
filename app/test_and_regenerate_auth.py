@@ -31,9 +31,8 @@ def get_ssm_parameter_value(parameter_name):
     ssm_client = boto3.client('ssm')
     logger.debug("Requesting un-encrypted parameter information for '%s'." % parameter_env)
     parameter_info = ssm_client.get_parameter(Name=parameter_env, WithDecryption=True)
-    logger.debug("Returned parameter_info. Seeking [parameter][value].")
-    print(parameter_info)
-    parameter_value = parameter_info['parameter']['value']
+    logger.debug("Returned parameter_info dictionary. Seeking ['Parameter']['Value'].")
+    parameter_value = parameter_info['Parameter']['Value']
     logger.debug("Value found. Returning...")
     return parameter_value
 
