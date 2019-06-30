@@ -11,7 +11,7 @@ set_environment: &set_environment
       echo 'export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY' >> $BASH_ENV
       echo 'export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY' >> $BASH_ENV
 
-base_terraform_image: &base_terrafrom_image
+base_terraform_image: &base_terraform_image
   hashicorp/terraform:0.12.2
 
 base_python_image: &base_python_image
