@@ -11,15 +11,25 @@ set_environment: &set_environment
       echo 'export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY' >> $BASH_ENV
       echo 'export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY' >> $BASH_ENV
 
-base_image: &base_image
+base_terraform_image: &base_terrafrom_image
   hashicorp/terraform:0.12.2
 
+base_python_image: &base_python_image
+  circleci/python:3.7
+  
 working_directory: &working_directory
   ~/working
 
-default_config: &default_config
+terraform_config: &terraform_config
   docker:
-    - image: *base_image
+    - image: *base_terraform_image
+  working_directory: *working_directory
+  environment:
+    BASH_ENV: /root/.bashrc
+
+python_config: &python_config
+  docker:
+    - image: *base_python_image
   working_directory: *working_directory
   environment:
     BASH_ENV: /root/.bashrc
@@ -72,56 +82,57 @@ run_terraform_destroy: &run_terraform_destroy
       cd terraform
       terraform destroy -auto-approve
 
+install_app_dependencies: &install_app_dependencies
+  run:
+    name: Install App Dependencies
+    command: |
+      python3 -m venv venv
+      source venv/bin/activate
+      pip3 install -r app/requirements.txt
+
+zip_deployment_package: &zip_deployment_package
+    name: Zip Deployment Package
+    command: |
+      source venv/bin/activate
+      shopt -s dotglob # Ensure the 'mv' command picks up dot-prefixed files and directories
+      mv venv/lib/python3.7/site-packages/* app/
+      cd app
+      zip -r9 ../app/app.zip .
+
+restore_requirements_cache: &restore_requirements_cache
+  - restore_cache:
+      keys:
+        - requirements-{{checksum "app/requirements.txt" }}
+        - requirements-
+
+save_requirements_cache: &save_requirements_cache
+  - save_cache:
+      paths:
+        - ./venv
+      key: requirements-{{checksum "app/requirements.txt" }}
+
 jobs:
   build-lambda:
-    docker:
-      - image: circleci/python:3.7
-    working_directory: *working_directory
+    <<: *python_config
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - requirements-{{checksum "app/requirements.txt" }}
-            - requirements-
-      - run:
-          name: Install dependencies 
-          command: |
-            python3 -m venv venv
-            source venv/bin/activate
-            pip3 install -r app/requirements.txt
-      - save_cache:
-          paths:
-            - ./venv
-          key: requirements-{{checksum "app/requirements.txt" }}
-      - run:
-          name: Zip Deployment Package
-          command: |
-            source venv/bin/activate
-            shopt -s dotglob # Ensure the 'mv' command picks up dot-prefixed files and directories
-            mv venv/lib/python3.7/site-packages/* app/
-            cd app
-            zip -r9 ../app/app.zip .
+      - *restore_requirements_cache
+      - *install_app_dependencies
+      - *save_requirements_cache
+      - *zip_deployment_package
       - persist_to_workspace:
           root: *working_directory
           paths:
             - app/app.zip
 
   terraform-plan:
-    <<: *default_config
+    <<: *terraform_config
     steps:
       - checkout
       - *set_environment
       - attach_workspace:
           at: *working_directory
       - *save_repo
-      - run:
-          name: location test
-          command: |
-            ls
-            cd app
-            ls
-            cd ..
-            cd terraform
       - *run_terraform_init
       - *run_terraform_plan
       - persist_to_workspace:
@@ -130,7 +141,7 @@ jobs:
             - terraform/terraform.plan
 
   terraform-apply:
-      <<: *default_config
+      <<: *terraform_config
       steps:
         - *restore_repo
         - *set_environment
@@ -140,7 +151,7 @@ jobs:
         - *run_terraform_apply
 
   terraform-destroy:
-      <<: *default_config
+      <<: *terraform_config
       steps:
         - *set_environment
         - *restore_repo
