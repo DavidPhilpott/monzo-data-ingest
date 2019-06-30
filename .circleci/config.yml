@@ -74,23 +74,27 @@ run_terraform_destroy: &run_terraform_destroy
 
 jobs:
   build-lambda:
-      docker:
-        - image: lambci/lambda:build-python3.6
-      steps:
-        - checkout
-        - run: 
-            name: Install base requirements
-            command: |
-              pip3 install -r app/requirements.txt -t build/python/lib/python3.6/site-packages -q
-              ls -ltr build/python/lib/python3.6/site-packages
-              cd build
-              du -chs .
-              zip -rq ../app.zip .
-              du -chs ../app.zip
-        - save_cache:
-            key: 'app-{{ .Environment.CIRCLE_SHA1 }}'
-            paths:
-              - app.zip
+    docker:
+      - image: lambci/lambda:build-python3.6
+    steps:
+      - checkout
+      - run: 
+          name: Install base requirements
+          command: |
+            pip3 install -r app/requirements.txt -t build/python/lib/python3.6/site-packages -q
+            ls -ltr build/python/lib/python3.6/site-packages
+            cd build
+            du -chs .
+            zip -rq ../app.zip .
+            du -chs ../app.zip
+      - save_cache:
+          key: 'app-{{ .Environment.CIRCLE_SHA1 }}'
+          paths:
+            - app.zip
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - app/app.plan
 
   terraform-plan:
     <<: *default_config
