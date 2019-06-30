@@ -12,9 +12,9 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
   definition = <<EOF
 {
   "Comment": "Accesses Monzo account and ingests information from APIs.",
-  "StartAt": "CheckAuthorisationCredentials",
+  "StartAt": "Check Access Key",
   "States": {
-    "CheckAuthorisationCredentials": {
+    "Check Access Key": {
       "Type": "Task",
       "Resource": "${aws_lambda_function.check_valid_auth_tokens.arn}",
       "End": true
