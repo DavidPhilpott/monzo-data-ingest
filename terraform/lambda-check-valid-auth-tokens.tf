@@ -6,7 +6,7 @@ resource "aws_lambda_function" "check_valid_auth_tokens" {
   runtime           = "python3.7"
   filename          = "../app/app.zip"
   source_code_hash  = "${filebase64sha256("../app/app.zip")}"
-  handler           = "test_and_regenerate_auth.main"
+  handler           = "test_authorisation.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
   environment {
