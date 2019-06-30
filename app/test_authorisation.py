@@ -42,6 +42,7 @@ def get_ssm_parameter_value(parameter_name):
 
 def authorisation_test(access_key):
     """Submit a request to monzo whoami. Return true if monzo allows access, false otherwise"""
+    """TODO: Change this exception handling to check for http error codes coming back from requests"""
     logger.info("Testing access to Monzo.")
     api_url = r'https://api.monzo.com/ping/whoami'
     test_params = {'access_key': access_key}
@@ -51,28 +52,6 @@ def authorisation_test(access_key):
         access_test = requests.get(url=api_url, data=test_params)
         result = access_test.text['authenticated']
         logger.debug("Received authorisation result '%s'" % result)
-    """TODO: Change this exception handling to check for http error codes coming back from requests
-        200 
-        OK  All is well.
-        400
-        Bad Request     Your request has missing arguments or is malformed.
-        401
-        Unauthorized    Your request is not authenticated.
-        403
-        Forbidden   Your request is authenticated but has insufficient permissions.
-        405
-        Method Not Allowed  You are using an incorrect HTTP verb. Double check whether it should be POST/GET/DELETE/etc.
-        404
-        Page Not Found  The endpoint requested does not exist.
-        406
-        Not Acceptable  Your application does not accept the content format returned according to the Accept headers sent in the request.
-        429
-        Too Many Requests   Your application is exceeding its rate limit. Back off, buddy. :p
-        500
-        Internal Server Error   Something is wrong on our end. Whoopsie.
-        504
-        Gateway Timeout     Something has timed out on our end. Whoopsie.
-        """
     except Exception as e:
         logger.warning(e, exc_info=False)
         logger.debug("Setting result to 'False' by default.")
