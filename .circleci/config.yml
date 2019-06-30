@@ -81,7 +81,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - requirements-{{checksum "requirements.txt" }}
+            - requirements-{{checksum "app/requirements.txt" }}
             - requirements-
       - run:
           name: Install requirements in a virtual environment
@@ -92,12 +92,20 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: requirements-{{ checksum "requirements.txt" }}
+          key: requirements-{{checksum "app/requirements.txt" }}
       - run:
           name: Zip zip_package
           command: |
             source ./venv/bin/activate &&
+            ls
             mkdir requirements && 
+            ls
+            cd repo
+            ls
+            cd ..
+            cd app
+            ls
+            cd ..
             mv app/* ~/repo/requirements &&
             cd venv/lib/python3.6/site-packages/ &&
             zip -r  ../../../../requirements.zip .
