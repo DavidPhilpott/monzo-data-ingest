@@ -36,7 +36,8 @@ resource "aws_ssm_parameter" "client_secret_id" {
   lifecycle {
     ignore_changes = [
       value,
-  ]
+    ]
+  }
 
   tags = merge(
     {
@@ -44,7 +45,6 @@ resource "aws_ssm_parameter" "client_secret_id" {
     },
     local.common_tags
   )
-
 }
 
 resource "aws_ssm_parameter" "access_key" {
@@ -57,7 +57,8 @@ resource "aws_ssm_parameter" "access_key" {
   lifecycle {
     ignore_changes = [
       value,
-  ]
+    ]
+  }
 
   tags = merge(
     {
@@ -65,7 +66,6 @@ resource "aws_ssm_parameter" "access_key" {
     },
     local.common_tags
   )
-
 }
 
 resource "aws_ssm_parameter" "refresh_token" {
@@ -85,6 +85,6 @@ resource "aws_ssm_parameter" "refresh_token" {
   lifecycle {
     ignore_changes = [
       value,
-  ]
-
+    ]
+  }
 }
