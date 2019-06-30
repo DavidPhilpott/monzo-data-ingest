@@ -78,7 +78,7 @@ resource "aws_iam_role_policy" "monzo_lambda_ec2_policy" {
 data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
   statement {
     actions   = var.lambda_iam_actions
-    resources = merge(
+    resources = concat(
       [
         aws_ssm_parameter.client_id.arn,
         aws_ssm_parameter.redirect_uri.arn,
