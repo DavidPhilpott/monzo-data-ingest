@@ -35,3 +35,11 @@ variable redirect_uri {
 variable logging_level {
   type = string
 }
+
+variable lambda_iam_actions {
+  type = list
+}
+
+variable lambda_iam_resources {
+  type = list
+}

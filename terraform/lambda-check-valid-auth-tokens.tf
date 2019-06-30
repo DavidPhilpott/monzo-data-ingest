@@ -1,15 +1,13 @@
 resource "aws_lambda_function" "check_valid_auth_tokens" {
-  filename      = "../app/app.zip"
   function_name = "monzo-data-ingest-check-valid-auth-tokens"
+  description   = "Tests if Monzo access key is still valid and regenerates if not."
   role          = aws_iam_role.iam_role_check_valid_auth_tokens_lambda.arn
-  handler       = "test_and_regenerate_auth.main"
 
-  # The filebase64sha256() function is available in Terraform 0.11.12 and later
-  # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
-  # source_code_hash = "${base64sha256(file("lambda_function_payload.zip"))}"
-  source_code_hash = "${filebase64sha256("../app/app.zip")}"
-
-  runtime = "python3.7"
+  runtime           = "python3.7"
+  filename          = "../app/app.zip"
+  source_code_hash  = "${filebase64sha256("../app/app.zip")}"
+  handler           = "test_and_regenerate_auth.main"
+  layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
   environment {
     variables = {
@@ -44,9 +42,47 @@ resource "aws_iam_role" "iam_role_check_valid_auth_tokens_lambda" {
       },
       "Effect": "Allow",
       "Sid": ""
+    },
+    {
+      "Action": "
     }
   ]
 }
 EOF
 }
 
+
+## EC2 Access Policy
+
+data "aws_iam_policy_document" "monzo_lambda_ec2_policy_document" {
+  statement {
+    actions = [
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface"
+    ]
+
+    resources = [
+      "*"
+    ]
+}
+
+resource "aws_iam_role_policy" "monzo_lambda_ec2_policy" {
+  role   = aws_iam_role.iam_role_check_valid_auth_tokens_lambda.id
+  policy = data.aws_iam_policy_document.monzo_lambda_ec2_policy_document.json
+}
+
+## Other Access Policy
+
+data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
+  statement {
+    actions   = var.lambda_iam_actions
+    resources = var.lambda_iam_resources
+  }
+}
+
+resource "aws_iam_role_policy" "monzo_lambda_custom_policy" {
+  count = length(var.lambda_iam_actions) > 0 && length(var.lambda_iam_resources) > 0 ? 1 : 0
+
+  role   = aws_iam_role.iam_role_check_valid_auth_tokens_lambda.id
+  policy = data.aws_iam_policy_document.monzo_lambda_custom_policy_document.json
