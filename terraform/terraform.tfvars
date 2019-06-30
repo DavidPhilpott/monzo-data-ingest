@@ -18,9 +18,4 @@ lambda_iam_actions = [
   ]
 
 lambda_iam_resources = [
-    aws_ssm_parameter.client_id.arn,
-    aws_ssm_parameter.redirect_uri.arn,
-    aws_ssm_parameter.client_secret_id.arn,
-    aws_ssm_parameter.access_key.arn,
-    aws_ssm_parameter.refresh_token.arn,
-]
+  ]
