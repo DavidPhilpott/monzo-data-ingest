@@ -86,7 +86,8 @@ data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
         aws_ssm_parameter.access_key.arn,
         aws_ssm_parameter.refresh_token.arn,
       ],
-      var.lambda_iam_resources
+      var.lambda_iam_resources,
+    )
   }
 }
 
