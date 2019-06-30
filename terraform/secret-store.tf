@@ -31,6 +31,7 @@ resource "aws_ssm_parameter" "client_secret_id" {
   description = "Secret ID of the Monzo app which will be used to access the API."
   type        = "SecureString"
   value       = "xyz"
+  overwrite   = false
 
   tags = merge(
     {
@@ -46,6 +47,7 @@ resource "aws_ssm_parameter" "access_key" {
   description = "Access key used to request from the API."
   type        = "SecureString"
   value       = "xyz"
+  overwrite   = false
 
   tags = merge(
     {
@@ -61,6 +63,7 @@ resource "aws_ssm_parameter" "refresh_token" {
   description = "Refresh token used to renew the Monzo access key."
   type        = "SecureString"
   value       = "xyz"
+  overwrite   = false
 
   tags = merge(
     {
