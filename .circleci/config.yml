@@ -94,7 +94,7 @@ zip_requirements_package: &zip_requirements_package
   run:
     name: Zip Requirements Package
     command: |
-      mkdir build/python/lib/python3.7/site-packages
+      mkdir -p build/python/lib/python3.7/site-packages
       source venv/bin/activate
       shopt -s dotglob
       mv venv/lib/python3.7/site-packages/* build/python/lib/python3.7/site-packages/
