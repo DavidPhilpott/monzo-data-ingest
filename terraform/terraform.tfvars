@@ -15,6 +15,9 @@ logging_level = "debug"
 lambda_iam_actions = [
     "secretsmanager:List*",
     "secretsmanager:Get*",
+    "ssm:Get*",
+    "ssm:List*",
+    "ssm:Put*"
   ]
 
 lambda_iam_resources = [
