@@ -91,6 +91,7 @@ install_app_dependencies: &install_app_dependencies
       pip3 install -r app/requirements.txt
 
 zip_deployment_package: &zip_deployment_package
+  run:
     name: Zip Deployment Package
     command: |
       source venv/bin/activate
@@ -100,16 +101,16 @@ zip_deployment_package: &zip_deployment_package
       zip -r9 ../app/app.zip .
 
 restore_requirements_cache: &restore_requirements_cache
-  - restore_cache:
-      keys:
-        - requirements-{{checksum "app/requirements.txt" }}
-        - requirements-
+  restore_cache:
+    keys:
+      - requirements-{{checksum "app/requirements.txt" }}
+      - requirements-
 
 save_requirements_cache: &save_requirements_cache
-  - save_cache:
-      paths:
-        - ./venv
-      key: requirements-{{checksum "app/requirements.txt" }}
+  save_cache:
+    paths:
+      - ./venv
+    key: requirements-{{checksum "app/requirements.txt" }}
 
 jobs:
   build-lambda:
