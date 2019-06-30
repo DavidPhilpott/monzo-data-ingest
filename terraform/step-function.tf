@@ -11,10 +11,10 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
 
   definition = <<EOF
 {
-  "Comment": "A Hello World example of the Amazon States Language using an AWS Lambda Function",
-  "StartAt": "HelloWorld",
+  "Comment": "Accesses Monzo account and ingests information from APIs.",
+  "StartAt": "CheckAuthorisationCredentials",
   "States": {
-    "HelloWorld": {
+    "CheckAuthorisationCredentials": {
       "Type": "Task",
       "Resource": "${aws_lambda_function.check_valid_auth_tokens.arn}",
       "End": true
