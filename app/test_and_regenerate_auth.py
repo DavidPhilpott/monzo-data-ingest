@@ -21,18 +21,17 @@ def get_ssm_parameter_value(parameter_name):
     try:
         parameter_env = os.getenv(parameter_name, None)
         if parameter_env is not None:
-            logger.debug("Found environmental variable. Associated value is set to '%s'" %s)
+            logger.debug("Found environmental variable. Associated value is set to '%s'" % parameter_env)
         else:
-            raise ValueError("Could not find value for environmental variable '%s'" %parameter_name)
+            raise ValueError("Could not find value for environmental variable '%s'" % parameter_name)
     except ValueError as e:
         logger.exception(e.message, exc_info=False)
         raise e
     logger.debug("Creating SSM client.")
     ssm_client = boto3.client('ssm')
-    logger.debug("Requesting un-encrypted parameter information for '%s'." %parameter_env)
+    logger.debug("Requesting un-encrypted parameter information for '%s'." % parameter_env)
     parameter_info = ssm_client.get_parameter(Name=parameter_env, WithDecryption=True)
-    logger.debug("Returned parameter_info.")
-    logger.debug("Seeking parameter_info[parameter][value].")
+    logger.debug("Returned parameter_info. Seeking [parameter][value].")
     parameter_value = parameter_info['parameter']['value']
     logger.debug("Value found. Returning...")
     return parameter_value
