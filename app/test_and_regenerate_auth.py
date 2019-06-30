@@ -50,6 +50,4 @@ def main(event, context):
     redirect_uri = get_ssm_parameter_value(parameter_name='redirect_uri_parameter')
     access_key = get_ssm_parameter_value(parameter_name='access_key_parameter')
     refresh_token = get_ssm_parameter_value(parameter_name='refresh_token_parameter')
-
-    print(client_id, client_secret_id, redirect_uri, access_key, refresh_token)
     return
