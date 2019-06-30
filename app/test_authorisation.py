@@ -47,7 +47,7 @@ def authorisation_test(access_key):
     test_params = {'access_key': access_key}
     try:
         logger.debug("Making request to whoami API.")
-        logger.debug("URL: %s, Parameters: %s" % (api_url, test_params))
+        logger.debug("URL: %s, Parameters: %s" % (api_url, test_params.keys()))
         access_test = requests.get(url=api_url, data=test_params)
         result = json.loads(access_test.text)['authenticated']
         logger.debug("Received authorisation result '%s'" % result)
