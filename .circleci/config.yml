@@ -111,6 +111,8 @@ jobs:
     steps:
       - checkout
       - *set_environment
+      - attach_workspace:
+          at: *working_directory
       - *save_repo
       - run:
           name: location test
