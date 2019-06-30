@@ -75,26 +75,39 @@ run_terraform_destroy: &run_terraform_destroy
 jobs:
   build-lambda:
     docker:
-      - image: lambci/lambda:build-python3.6
+      - image: circleci/python3.7
+    working_directory: *working_directory
     steps:
       - checkout
-      - run: 
-          name: Install base requirements
+      - restore_cache:
+          keys:
+            - requirements-{{checksum "requirements.txt" }}
+            - requirements-
+      - run:
+          name: Install requirements in a virtual environment
           command: |
-            pip3 install -r app/requirements.txt -t build/python/lib/python3.6/site-packages -q
-            ls -ltr build/python/lib/python3.6/site-packages
-            cd build
-            du -chs .
-            zip -rq ../app.zip .
-            du -chs ../app.zip
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r app/requirements.txt 
       - save_cache:
-          key: 'app-{{ .Environment.CIRCLE_SHA1 }}'
           paths:
-            - app.zip
+            - ./venv
+          key: requirements-{{ checksum "requirements.txt" }}
+      - run:
+          name: Zip zip_package
+          command: |
+            source ./venv/bin/activate &&
+            mkdir requirements && 
+            mv app/* ~/repo/requirements &&
+            cd venv/lib/python3.6/site-packages/ &&
+            zip -r  ../../../../requirements.zip .
+            cd ~/repo/requirements && 
+            unzip ~/repo/requirements.zip && 
+            zip -r ../app.zip . 
       - persist_to_workspace:
           root: *working_directory
           paths:
-            - app/app.plan
+            - app/app.zip
 
   terraform-plan:
     <<: *default_config
