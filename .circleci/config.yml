@@ -84,34 +84,23 @@ jobs:
             - requirements-{{checksum "app/requirements.txt" }}
             - requirements-
       - run:
-          name: Install requirements in a virtual environment
+          name: Install dependencies 
           command: |
             python3 -m venv venv
-            . venv/bin/activate
-            pip install -r app/requirements.txt 
+            source venv/bin/activate
+            pip3 install -r app/requirements.txt
       - save_cache:
           paths:
             - ./venv
           key: requirements-{{checksum "app/requirements.txt" }}
       - run:
-          name: Zip zip_package
+          name: Zip Deployment Package
           command: |
-            source ./venv/bin/activate &&
-            ls
-            mkdir requirements && 
-            ls
-            cd repo
-            ls
-            cd ..
+            source venv/bin/activate
+            shopt -s dotglob # Ensure the 'mv' command picks up dot-prefixed files and directories
+            mv venv/lib/python3.6/site-packages/* app/
             cd app
-            ls
-            cd ..
-            mv app/* ~/repo/requirements &&
-            cd venv/lib/python3.6/site-packages/ &&
-            zip -r  ../../../../requirements.zip .
-            cd ~/repo/requirements && 
-            unzip ~/repo/requirements.zip && 
-            zip -r ../app.zip . 
+            zip -r9 ../app/deployment.zip .
       - persist_to_workspace:
           root: *working_directory
           paths:
