@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "check_valid_auth_tokens" {
   function_name = "monzo-data-ingest-check-valid-auth-tokens"
-  description   = "Tests if Monzo access key is still valid and regenerates if not."
+  description   = "Tests if Monzo access key is still valid."
   role          = aws_iam_role.iam_role_check_valid_auth_tokens_lambda.arn
 
   runtime           = "python3.7"
