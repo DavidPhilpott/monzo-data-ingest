@@ -98,7 +98,10 @@ jobs:
           command: |
             source venv/bin/activate
             shopt -s dotglob # Ensure the 'mv' command picks up dot-prefixed files and directories
-            mv venv/lib/python3.6/site-packages/* app/
+            ls
+            ls venv
+            ls venv/lib
+            mv venv/lib/python3.7/site-packages/* app/
             cd app
             zip -r9 ../app/deployment.zip .
       - persist_to_workspace:
