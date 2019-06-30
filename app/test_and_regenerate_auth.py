@@ -9,8 +9,9 @@ def set_logger_level(log):
     if logging_level is 'NONE':
         print("No logging_level environmental variable found. Defaulting to 'DEBUG'.")
         logging_level = 'DEBUG'
+    else:
+        print("Setting logger to level: %s." % logging_level)
     logging_level_name = logging.getLevelName(logging_level)
-    print("Setting logger to level: %s." % logging_level_name)
     log.setLevel(logging_level_name)
     return
 
@@ -43,7 +44,7 @@ def main(event, context):
     logger = logging.getLogger(__name__)
     set_logger_level(logger)
 
-    logger.info("## Getting Parameter Values ##")
+    logger.info("-- Getting Parameter Values --")
     client_id = get_ssm_parameter_value(parameter_name='client_id_parameter')
     client_secret_id = get_ssm_parameter_value(parameter_name='client_secret_id_parameter')
     redirect_uri = get_ssm_parameter_value(parameter_name='redirect_uri_parameter')
