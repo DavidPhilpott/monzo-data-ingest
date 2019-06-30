@@ -185,7 +185,7 @@ workflows:
       - build-lambda-app
       - terraform-plan:
           requires:
-            - build-lambda
+            - build-lambda-app
             - build-lambda-requirements
       - terraform-apply:
           requires:
