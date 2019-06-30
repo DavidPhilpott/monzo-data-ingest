@@ -27,7 +27,7 @@ def get_ssm_parameter_value(parameter_name):
         else:
             raise ValueError("Could not find value for environmental variable '%s'" % parameter_name)
     except ValueError as e:
-        logger.exception(e.message, exc_info=False)
+        logger.exception(e, exc_info=False)
         raise e
     logger.debug("Creating SSM client.")
     ssm_client = boto3.client('ssm')
@@ -51,7 +51,7 @@ def authorisation_test(access_key):
         logger.debug("Received authorisation result '%s'" % result)
 
     except Exception as e:
-        logger.warning(e.message, exc_info=False)
+        logger.warning(e, exc_info=False)
         logger.debug("Setting result to 'False' by default.")
         result = False
         pass
