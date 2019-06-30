@@ -90,13 +90,21 @@ install_app_dependencies: &install_app_dependencies
       source venv/bin/activate
       pip3 install -r app/requirements.txt
 
-zip_deployment_package: &zip_deployment_package
+zip_requirements_package: &zip_requirements_package
   run:
-    name: Zip Deployment Package
+    name: Zip Requirements Package
     command: |
+      mdkir requirements
       source venv/bin/activate
       shopt -s dotglob # Ensure the 'mv' command picks up dot-prefixed files and directories
-      mv venv/lib/python3.7/site-packages/* app/
+      mv venv/lib/python3.7/site-packages/* requirements/
+      cd requirements
+      zip -r9 ../app/requirements.zip .
+
+zip_app_package: &zip_app_package
+  run:
+    name: Zip App Package
+    command: |
       cd app
       zip -r9 ../app/app.zip .
 
@@ -113,14 +121,24 @@ save_requirements_cache: &save_requirements_cache
     key: requirements-{{checksum "app/requirements.txt" }}
 
 jobs:
-  build-lambda:
-    <<: *python_config
+  build-lambda-requirements:
+    <<: *python_config    
     steps:
       - checkout
       - *restore_requirements_cache
       - *install_app_dependencies
       - *save_requirements_cache
-      - *zip_deployment_package
+      - *zip_requirements_package
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - app/requirements.zip
+
+  build-lambda-app:
+    <<: *python_config
+    steps:
+      - checkout
+      - *zip_app_package
       - persist_to_workspace:
           root: *working_directory
           paths:
@@ -163,10 +181,12 @@ workflows:
   version: 1
   deploy-infra-and-app: 
     jobs:
-      - build-lambda
+      - build-lambda-requirements
+      - build-lambda-app
       - terraform-plan:
           requires:
             - build-lambda
+            - build-lambda-requirements
       - terraform-apply:
           requires:
             - terraform-plan
