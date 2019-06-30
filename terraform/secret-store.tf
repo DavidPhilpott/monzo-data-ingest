@@ -33,6 +33,11 @@ resource "aws_ssm_parameter" "client_secret_id" {
   value       = "xyz"
   overwrite   = false
 
+  lifecycle {
+    ignore_changes = [
+      value,
+  ]
+
   tags = merge(
     {
       "Name" = "monzo-data-ingest-client-secret-id"
@@ -48,6 +53,11 @@ resource "aws_ssm_parameter" "access_key" {
   type        = "SecureString"
   value       = "xyz"
   overwrite   = false
+
+  lifecycle {
+    ignore_changes = [
+      value,
+  ]
 
   tags = merge(
     {
@@ -71,5 +81,10 @@ resource "aws_ssm_parameter" "refresh_token" {
     },
     local.common_tags
   )
+
+  lifecycle {
+    ignore_changes = [
+      value,
+  ]
 
 }
