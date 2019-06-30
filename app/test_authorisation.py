@@ -49,7 +49,7 @@ def authorisation_test(access_key):
         logger.debug("Making request to whoami API.")
         logger.debug("URL: %s, Parameters: %s" % (api_url, test_params))
         access_test = requests.post(url=api_url, data=test_params)
-        result = access_test['authenticated']
+        result = access_test.text['authenticated']
         logger.debug("Received authorisation result '%s'" % result)
     except Exception as e:
         logger.warning(e, exc_info=False)
