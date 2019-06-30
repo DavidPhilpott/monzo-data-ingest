@@ -42,9 +42,6 @@ resource "aws_iam_role" "iam_role_check_valid_auth_tokens_lambda" {
       },
       "Effect": "Allow",
       "Sid": ""
-    },
-    {
-      "Action": ""
     }
   ]
 }
