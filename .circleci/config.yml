@@ -94,7 +94,7 @@ zip_requirements_package: &zip_requirements_package
   run:
     name: Zip Requirements Package
     command: |
-      mdkir requirements
+      mkdir requirements
       source venv/bin/activate
       shopt -s dotglob # Ensure the 'mv' command picks up dot-prefixed files and directories
       mv venv/lib/python3.7/site-packages/* requirements/
