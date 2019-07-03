@@ -24,7 +24,7 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
 
       "Was Key Accepted?": {
         "Type": "Choice",
-        "InputPath": "$.auth_granted"
+        "InputPath": "$.auth_granted",
         "Choices": [
           {
             "Variable": "$.auth_granted",
