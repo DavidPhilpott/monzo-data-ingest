@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "monzo_lambda_core_policy_document" {
 }
 
 resource "aws_iam_role_policy" "monzo_lambda_core_policy" {
-  role   = aws_iam_role.iam_role_check_valid_auth_tokens_lambda.id
+  role   = aws_iam_role.iam_role_lambdas.id
   policy = data.aws_iam_policy_document.monzo_lambda_core_policy_document.json
 }
 
@@ -70,6 +70,6 @@ data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
 }
 
 resource "aws_iam_role_policy" "monzo_lambda_custom_policy" {
-  role   = aws_iam_role.iam_role_check_valid_auth_tokens_lambda.id
+  role   = aws_iam_role.iam_role_lambdas.id
   policy = data.aws_iam_policy_document.monzo_lambda_custom_policy_document.json
 }
