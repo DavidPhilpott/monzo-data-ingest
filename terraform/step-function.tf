@@ -24,7 +24,7 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
         "Type": "Choice",
         "Choices": [
           {
-            "Variable": "$.auth_granted"
+            "Variable": "$.auth_granted",
             "BooleanEquals": false,
             "Next": "Refresh Access"
           },
