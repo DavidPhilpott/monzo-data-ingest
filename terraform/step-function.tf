@@ -10,17 +10,45 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
   )
 
   definition = <<EOF
-{
-  "Comment": "Accesses Monzo account and ingests information from APIs.",
-  "StartAt": "Check Access Key",
-  "States": {
-    "Check Access Key": {
-      "Type": "Task",
-      "Resource": "${aws_lambda_function.check_valid_auth_tokens.arn}",
-      "End": true
+  {
+    "Comment": "Accesses Monzo account and ingests information from APIs.",
+    "StartAt": "Check Access Key",
+    "States": {
+      "Check Access Key": {
+        "Type": "Task",
+        "Resource": "${aws_lambda_function.check_valid_auth_tokens.arn}",
+        "Next": "Was Key Accepted?"
+      },
+
+      "Was Key Accepted?": {
+        "Type": "Choice",
+        "Choices": [
+          {
+            "Variable": "$.auth_granted"
+            "BooleanEquals": false,
+            "Next": "Refresh Access"
+          },
+          {
+            "Variable": "$.auth_granted",
+            "BooleanEquals": true,
+            "Next": "Ingest Data"
+          }
+        ]
+      },
+
+      "Refresh Access": {
+        "Type": "Task",
+        "Resource": "${aws_lambda_function.refresh_auth_tokens.arn}",
+        "Next": "Ingest Data"
+      },
+
+      "Ingest Data": {
+        "Type": "Task,
+        "Resource": ${aws_lambda_function.ingest_data_arn}",
+        "End": "True"
+      }
     }
   }
-}
 EOF
 }
 
