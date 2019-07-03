@@ -45,7 +45,7 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
       "Ingest Data": {
         "Type": "Task",
         "Resource": "${aws_lambda_function.ingest_data.arn}",
-        "End": "True"
+        "End": true
       }
     }
   }
