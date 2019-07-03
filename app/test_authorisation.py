@@ -70,9 +70,9 @@ def main(event, context):
     logger.info("Finished getting parameter values.")
 
     logger.info("-- Testing Current Access Keys --")
-    if authorisation_test(access_key) is True:
+    auth_granted = authorisation_test(access_key)
+    if auth_granted is True:
         logger.info("Authorisation test PASSED. Keys do not need to be refreshed.")
-        return True
     else:
         logger.info("Authorisation test FAILED. Keys need to be refreshed.")
-        return False
+    return auth_granted
