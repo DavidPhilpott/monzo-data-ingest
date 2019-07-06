@@ -18,7 +18,7 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
         "Type": "Task",
         "Resource": "${aws_lambda_function.check_valid_auth_tokens.arn}",
         "ResultPath": "$.test_result_path",
-        "Next": "Was Key Accepted?",
+        "Next": "Was Key Accepted?"
       },
 
       "Was Key Accepted?": {
