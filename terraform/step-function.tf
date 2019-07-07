@@ -17,11 +17,12 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
       "Check Access Key": {
         "Type": "Task",
         "Resource": "${aws_lambda_function.check_valid_auth_tokens.arn}",
-        "ResultPath": "$.auth_granted",
+        "OutputPath": "$.auth_granted",
         "Next": "Was Key Accepted?"
       },
 
       "Was Key Accepted?": {
+        "InputPath": "$.auth_granted"
         "Type": "Choice",
         "Choices": [
           {
