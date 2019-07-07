@@ -6,7 +6,7 @@ resource "aws_lambda_function" "ingest_data" {
   runtime           = "python3.7"
   filename          = "../app/app.zip"
   source_code_hash  = "${filebase64sha256("../app/app.zip")}"
-  handler           = "ingest-data.main"
+  handler           = "ingest_data.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
   environment {
