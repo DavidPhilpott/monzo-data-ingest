@@ -4,6 +4,7 @@ import logging
 import requests
 import json
 
+
 def set_logger_level(log):
     """Get logging_level from environment and use to set the logging level."""
     logging_level = os.getenv('logging_level', 'NONE').upper()
