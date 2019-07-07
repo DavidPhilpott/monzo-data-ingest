@@ -31,6 +31,16 @@ def set_logger_format(logger_to_format):
 def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     """Write a parameter value to a given parameter name"""
     logger.info("Writing SSM parameter value for %s." % parameter_name)
+    logger.debug("Searching for environmental variable.")
+    try:
+        parameter_env = os.getenv(parameter_name, None)
+        if parameter_env is not None:
+            logger.debug("Found environmental variable. Associated value is set to '%s'" % parameter_env)
+        else:
+            raise ValueError("Could not find value for environmental variable '%s'" % parameter_name)
+    except ValueError as e:
+        logger.exception(e, exc_info=False)
+        raise e
     logging.debug("Requesting SSM client.")
     ssm_client = boto3.client('ssm')
     logger.debug("Argument is_secure is %s." % is_secure)
@@ -38,8 +48,8 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
         string_type = "SecureString"
     else:
         string_type = "String"
-    logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_name, string_type))
-    response = ssm_client.put_parameter(Name=parameter_name,
+    logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_env, string_type))
+    response = ssm_client.put_parameter(Name=parameter_env,
                                         Value=new_parameter_value,
                                         Type=string_type,
                                         Overwrite=True)

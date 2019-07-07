@@ -90,8 +90,8 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
         string_type = "SecureString"
     else:
         string_type = "String"
-    logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_name, string_type))
-    response = ssm_client.put_parameter(Name=parameter_name,
+    logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_env, string_type))
+    response = ssm_client.put_parameter(Name=parameter_env,
                                         Value=new_parameter_value,
                                         Type=string_type,
                                         Overwrite=True)
@@ -109,7 +109,6 @@ def main(event, context):
     set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    access_key = get_ssm_parameter_value(parameter_name='access_key_parameter')
     client_id = get_ssm_parameter_value(parameter_name='client_id_parameter')
     client_secret_id = get_ssm_parameter_value(parameter_name='client_secret_id_parameter')
     refresh_token = get_ssm_parameter_value(parameter_name='refresh_token_parameter')
