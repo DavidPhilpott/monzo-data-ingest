@@ -19,7 +19,7 @@ def set_logger_level(logger_to_set):
 def set_logger_format(logger_to_format):
     """Set logger output format to a hardcoded version."""
     print("Setting logger formatting")
-    log_format = logging.Formatter(fmt='%(asctime)s | %(levelname)-6s | %(thread)-5s | %(message)s',
+    log_format = logging.Formatter(fmt='%(asctime)s | %(levelname)6s | %(thread)5s | %(message)s',
                                    datefmt='%d-%b-%y %H:%M:%S')
     log_handler = logging.StreamHandler()
     log_handler.setFormatter(log_format)
