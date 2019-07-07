@@ -73,6 +73,16 @@ def refresh_access_key(client_id, client_secret_id, refresh_token):
 def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     """Write a parameter value to a given parameter name"""
     logger.info("Writing SSM parameter value for %s." % parameter_name)
+    logger.debug("Searching for environmental variable.")
+    try:
+        parameter_env = os.getenv(parameter_name, None)
+        if parameter_env is not None:
+            logger.debug("Found environmental variable. Associated value is set to '%s'" % parameter_env)
+        else:
+            raise ValueError("Could not find value for environmental variable '%s'" % parameter_name)
+    except ValueError as e:
+        logger.exception(e, exc_info=False)
+        raise e
     logging.debug("Requesting SSM client.")
     ssm_client = boto3.client('ssm')
     logger.debug("Argument is_secure is %s." % is_secure)
@@ -110,10 +120,10 @@ def main(event, context):
                                                            refresh_token=refresh_token)
     logger.info("Finished getting new access tokens.")
     logger.info("-- Writing New Tokens to SSM -- ")
-    write_ssm_parameter_value(parameter_name=access_key,
+    write_ssm_parameter_value(parameter_name='access_key_parameter',
                               new_parameter_value=new_access_key,
                               is_secure=True)
-    write_ssm_parameter_value(parameter_name=refresh_token,
+    write_ssm_parameter_value(parameter_name='refresh_token_parameter',
                               new_parameter_value=new_refresh_token,
                               is_secure=True)
     return

@@ -91,3 +91,25 @@ resource "aws_ssm_parameter" "refresh_token" {
     ]
   }
 }
+
+resource "aws_ssm_parameter" "monzo_bootstrap_token {
+  name        = "monzo-data-ingest-bootstrap-token"
+  description = "Bootstrap token used to request initial access keys and refresh token."
+  type        = "SecureString"
+  value       = "xyz"
+  overwrite   = false
+
+  tags = merge(
+    {
+      "Name" = "monzo-data-ingest-bootstrap-token"
+    },
+    local.common_tags
+  )
+
+  lifecycle {
+    ignore_changes = [
+      value,
+      overwrite,
+    ]
+  }
+}
