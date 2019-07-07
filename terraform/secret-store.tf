@@ -36,6 +36,7 @@ resource "aws_ssm_parameter" "client_secret_id" {
   lifecycle {
     ignore_changes = [
       value,
+      overwrite,
     ]
   }
 
@@ -57,6 +58,7 @@ resource "aws_ssm_parameter" "access_key" {
   lifecycle {
     ignore_changes = [
       value,
+      overwrite,
     ]
   }
 
@@ -85,6 +87,7 @@ resource "aws_ssm_parameter" "refresh_token" {
   lifecycle {
     ignore_changes = [
       value,
+      overwrite,
     ]
   }
 }
