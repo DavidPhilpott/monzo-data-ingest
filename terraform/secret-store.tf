@@ -31,7 +31,7 @@ resource "aws_ssm_parameter" "client_secret_id" {
   description = "Secret ID of the Monzo app which will be used to access the API."
   type        = "SecureString"
   value       = "xyz"
-  overwrite   = false
+  overwrite   = true
 
   lifecycle {
     ignore_changes = [
@@ -53,7 +53,7 @@ resource "aws_ssm_parameter" "access_key" {
   description = "Access key used to request from the API."
   type        = "SecureString"
   value       = "xyz"
-  overwrite   = false
+  overwrite   = true
 
   lifecycle {
     ignore_changes = [
@@ -75,7 +75,7 @@ resource "aws_ssm_parameter" "refresh_token" {
   description = "Refresh token used to renew the Monzo access key."
   type        = "SecureString"
   value       = "xyz"
-  overwrite   = false
+  overwrite   = true
 
   tags = merge(
     {
@@ -97,7 +97,7 @@ resource "aws_ssm_parameter" "monzo_bootstrap_token" {
   description = "Bootstrap token used to request initial access keys and refresh token."
   type        = "SecureString"
   value       = "xyz"
-  overwrite   = false
+  overwrite   = true
 
   tags = merge(
     {

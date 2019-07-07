@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "bootstrap_monzo_auth" {
   function_name = "monzo-data-ingest-bootstrap-auth-tokens"
-  description   = "Echange a bootstrap token for initial access key and refresh token."
+  description   = "Exchange a bootstrap token for initial access key and refresh token."
   role          = aws_iam_role.iam_role_lambdas.arn
 
   runtime           = "python3.7"
