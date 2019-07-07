@@ -81,10 +81,10 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     else:
         string_type = "String"
     logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_name, string_type))
-    response = ssm_client.put_parameter(name=parameter_name,
-                                        value=new_parameter_value,
-                                        type=string_type,
-                                        overwrite=True)
+    response = ssm_client.put_parameter(Name=parameter_name,
+                                        Value=new_parameter_value,
+                                        Type=string_type,
+                                        Overwrite=True)
     logger.debug("Write response: %s" % response)
     logger.info("Write finished.")
     return
