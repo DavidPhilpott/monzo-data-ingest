@@ -57,10 +57,11 @@ def authorisation_test(access_key):
     logger.info("Testing access to Monzo.")
     api_url = r'https://api.monzo.com/ping/whoami'
     test_params = {'Authorization': 'Bearer %s' % access_key}
+    print (test_params)
     try:
         logger.debug("Making request to whoami API.")
         logger.debug("URL: %s, Parameters: %s" % (api_url, test_params.keys()))
-        access_test = requests.get(url=api_url, data=test_params)
+        access_test = requests.get(url=api_url, headers=test_params)
         result = json.loads(access_test.text)['authenticated']
         logger.debug("Received authorisation result '%s'" % result)
     except Exception as e:
