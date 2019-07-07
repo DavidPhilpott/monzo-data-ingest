@@ -60,7 +60,8 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value):
     """Write a parameter value to a given parameter name"""
     return
 
-def main(event, context)
+
+def main(event, context):
     print("-- Instantiating logger --")
     global logger
     logger = logging.getLogger(__name__)
