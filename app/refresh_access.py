@@ -90,6 +90,7 @@ def main(event, context):
     print("-- Instantiating logger --")
     global logger
     logger = logging.getLogger(__name__)
+    logger.propagate = False
     set_logger_level(logger)
     set_logger_format(logger)
 
