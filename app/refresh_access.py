@@ -1,6 +1,8 @@
 import boto3
 import os
 import logging
+import requests
+import json
 
 
 def set_logger_level(logger_to_set):
@@ -58,11 +60,13 @@ def refresh_access_key(client_id, client_secret_id, refresh_token):
                       'client_secret': client_secret_id,
                       'refresh_token': refresh_token}
     logging.debug("Submitting to '%s'" % api_url)
-    #raw_result = requests.post(url=api_url, data=refresh_params)
+    raw_result = requests.post(url=api_url, data=refresh_params)
     logging.debug("Received result. Parsing JSON.")
-    #result = json.loads(raw_result.text)
+    result = json.loads(raw_result.text)
     logging.info("Returning access_token and refresh_token.")
-    return "a", "b"#result['access_token'], result['refresh_token']
+    #TODO: Remove this log printing secrets
+    logger.debug("BAD LOGS: Access Token is %s, refresh token is %s" % (result['access_token'], result['refresh_token']))
+    return result['access_token'], result['refresh_token']
 
 
 def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
@@ -76,11 +80,10 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     else:
         string_type = "String"
     logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_name, string_type))
-    #response = ssm_client.put_parameter(name=parameter_name,
-    #                                    value=new_parameter_value,
-    #                                    type=string_type,
-    #                                    overwrite=True)
-    response = "Test Response"
+    response = ssm_client.put_parameter(name=parameter_name,
+                                        value=new_parameter_value,
+                                        type=string_type,
+                                        overwrite=True)
     logger.debug("Write response: %s" % response)
     logger.info("Write finished.")
     return
