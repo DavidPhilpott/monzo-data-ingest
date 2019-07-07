@@ -63,10 +63,7 @@ def refresh_access_key(client_id, client_secret_id, refresh_token):
     raw_result = requests.post(url=api_url, data=refresh_params)
     logging.debug("Received result. Parsing JSON.")
     result = json.loads(raw_result.text)
-    logging.info("Returning access_token and refresh_token.")
-    #TODO: Remove this log printing secrets
-    logger.debug(result)
-    logger.debug("BAD LOGS: Access Token is %s, refresh token is %s" % (result['access_token'], result['refresh_token']))
+    logging.debug("Returning access_token and refresh_token.")
     return result['access_token'], result['refresh_token']
 
 
