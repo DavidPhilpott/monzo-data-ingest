@@ -57,7 +57,6 @@ def authorisation_test(access_key):
     logger.info("Testing access to Monzo.")
     api_url = r'https://api.monzo.com/ping/whoami'
     test_params = {'Authorization': 'Bearer %s' % access_key}
-    print (test_params)
     try:
         logger.debug("Making request to whoami API.")
         logger.debug("URL: %s, Parameters: %s" % (api_url, test_params.keys()))
@@ -69,8 +68,6 @@ def authorisation_test(access_key):
         logger.debug("Setting result to 'False' by default.")
         result = False
         pass
-    print(result)
-    print(type(result))
     logger.debug("Returning %s." % result)
     return result
 

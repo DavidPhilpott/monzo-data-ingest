@@ -44,7 +44,7 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     logging.debug("Requesting SSM client.")
     ssm_client = boto3.client('ssm')
     logger.debug("Argument is_secure is %s." % is_secure)
-    if is_secure is False:
+    if is_secure is True:
         string_type = "SecureString"
     else:
         string_type = "String"
