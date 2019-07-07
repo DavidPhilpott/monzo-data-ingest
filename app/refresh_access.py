@@ -65,6 +65,7 @@ def refresh_access_key(client_id, client_secret_id, refresh_token):
     result = json.loads(raw_result.text)
     logging.info("Returning access_token and refresh_token.")
     #TODO: Remove this log printing secrets
+    logger.debug(result)
     logger.debug("BAD LOGS: Access Token is %s, refresh token is %s" % (result['access_token'], result['refresh_token']))
     return result['access_token'], result['refresh_token']
 
