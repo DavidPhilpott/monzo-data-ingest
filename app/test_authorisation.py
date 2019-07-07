@@ -68,6 +68,9 @@ def authorisation_test(access_key):
         logger.debug("Setting result to 'False' by default.")
         result = False
         pass
+    print(result)
+    print(type(result))
+    logger.debug("Returning %s." % result)
     return result
 
 

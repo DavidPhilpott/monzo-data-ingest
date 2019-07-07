@@ -62,7 +62,7 @@ def main(event, context):
     access_key = get_ssm_parameter_value(parameter_name='access_key_parameter')
     logger.info("Finished getting parameter values.")
     logger.debug("Getting Monzo client.")
-    monzo = Monzo(access_key)
+    monzo_client = Monzo(access_key)
     account_list = monzo_client.get_accounts()['accounts']
     print("Full account list")
     print(account_list)
