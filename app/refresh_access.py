@@ -99,6 +99,7 @@ def main(event, context):
     set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
+    access_key = get_ssm_parameter_value(parameter_name='access_key')
     client_id = get_ssm_parameter_value(parameter_name='client_id_parameter')
     client_secret_id = get_ssm_parameter_value(parameter_name='client_secret_id_parameter')
     refresh_token = get_ssm_parameter_value(parameter_name='refresh_token_parameter')
@@ -109,10 +110,10 @@ def main(event, context):
                                                            refresh_token=refresh_token)
     logger.info("Finished getting new access tokens.")
     logger.info("-- Writing New Tokens to SSM -- ")
-    write_ssm_parameter_value(parameter_name='access_key',
+    write_ssm_parameter_value(parameter_name=access_key,
                               new_parameter_value=new_access_key,
                               is_secure=True)
-    write_ssm_parameter_value(parameter_name='refresh_token_parameter',
+    write_ssm_parameter_value(parameter_name=refresh_token,
                               new_parameter_value=new_refresh_token,
                               is_secure=True)
     return
