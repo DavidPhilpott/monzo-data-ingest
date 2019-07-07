@@ -76,6 +76,7 @@ def main(event, context):
     global logger
     logger = logging.getLogger(__name__)
     set_logger_level(logger)
+    set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
     access_key = get_ssm_parameter_value(parameter_name='access_key_parameter')
