@@ -34,4 +34,30 @@ def main(event, context):
     logger.propagate = False
     set_logger_level(logger)
     set_logger_format(logger)
+
+    logger.info("-- Getting Parameter Values --")
+    access_key = get_ssm_parameter_value(parameter_name='access_key_parameter')
+    logger.info("Finished getting parameter values.")
+    logger.debug("Getting Monzo client.")
+    monzo = Monzo(access_key)
+    account_list = monzo_client.get_accounts()['accounts']
+    print("Full account list")
+    print(account_list)
+    for account in account_list:
+        account_id = account['id']
+        print('id: %s, closed: %s' %(account['id'], account['closed']))
+        balance = monzo.get_balance(account_id) # Get your balance object
+        print("Balance:")
+        print(balance['balance']) # 100000000000
+        print("Currency:")
+        print(balance['currency']) # GBP
+        print("Spend Today:")
+        print(balance['spend_today']) # 2000
+        print("Transactions:")
+        transactions = monzo.get_transactions(account_id)
+        print(transactions)
+
+    pots = monzo.get_pots()['pots']
+    print("Pots:")
+    print(pots)
     return
