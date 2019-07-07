@@ -63,6 +63,7 @@ data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
         aws_ssm_parameter.client_secret_id.arn,
         aws_ssm_parameter.access_key.arn,
         aws_ssm_parameter.refresh_token.arn,
+        aws_ssm_parameter.monzo_bootstrap_token.arn,
       ],
       var.lambda_iam_resources,
     )

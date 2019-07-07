@@ -92,7 +92,7 @@ resource "aws_ssm_parameter" "refresh_token" {
   }
 }
 
-resource "aws_ssm_parameter" "monzo_bootstrap_token {
+resource "aws_ssm_parameter" "monzo_bootstrap_token" {
   name        = "monzo-data-ingest-bootstrap-token"
   description = "Bootstrap token used to request initial access keys and refresh token."
   type        = "SecureString"
