@@ -10,19 +10,17 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
   )
 
   definition = <<EOF
-  {
+   {
     "Comment": "Accesses Monzo account and ingests information from APIs.",
     "StartAt": "Check Access Key",
     "States": {
       "Check Access Key": {
         "Type": "Task",
-        "Resource": "${aws_lambda_function.check_valid_auth_tokens.arn}",
-        "OutputPath": "$.auth_granted",
+        "Resource": "arn:aws:lambda:eu-west-1:020968065558:function:monzo-data-ingest-check-valid-auth-tokens",
         "Next": "Was Key Accepted?"
       },
 
       "Was Key Accepted?": {
-        "InputPath": "$.auth_granted",
         "Type": "Choice",
         "Choices": [
           {
@@ -40,13 +38,13 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
 
       "Refresh Access": {
         "Type": "Task",
-        "Resource": "${aws_lambda_function.refresh_auth_tokens.arn}",
+        "Resource": "arn:aws:lambda:eu-west-1:020968065558:function:monzo-data-ingest-refresh-auth-tokens",
         "Next": "Ingest Data"
       },
 
       "Ingest Data": {
         "Type": "Task",
-        "Resource": "${aws_lambda_function.ingest_data.arn}",
+        "Resource": "arn:aws:lambda:eu-west-1:020968065558:function:monzo-data-ingest-ingest-data",
         "End": true
       }
     }
