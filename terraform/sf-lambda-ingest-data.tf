@@ -8,8 +8,7 @@ resource "aws_lambda_function" "ingest_data" {
   source_code_hash  = "${filebase64sha256("../app/app.zip")}"
   handler           = "ingest_data.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
-
-  timeout = ${var.lambda_timeout}
+  timeout = var.lambda_timeout
 
   environment {
     variables = {

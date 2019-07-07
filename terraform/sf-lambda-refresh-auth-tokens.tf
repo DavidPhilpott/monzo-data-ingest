@@ -9,7 +9,7 @@ resource "aws_lambda_function" "refresh_auth_tokens" {
   handler           = "refresh_access.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
-  timeout = ${var.lambda_timeout}
+  timeout = var.lambda_timeout
 
   environment {
     variables = {
