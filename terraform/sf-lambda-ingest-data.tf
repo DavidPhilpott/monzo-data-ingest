@@ -9,6 +9,8 @@ resource "aws_lambda_function" "ingest_data" {
   handler           = "ingest_data.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
+  timeout = ${var.lambda_timeout}
+
   environment {
     variables = {
       access_key_parameter = aws_ssm_parameter.access_key.name,

@@ -43,3 +43,7 @@ variable lambda_iam_actions {
 variable lambda_iam_resources {
   type = list
 }
+
+variable lambda_timeout {
+  type = number
+}

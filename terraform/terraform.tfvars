@@ -22,3 +22,5 @@ lambda_iam_actions = [
 
 lambda_iam_resources = [
   ]
+
+lambda_timeout = 180
