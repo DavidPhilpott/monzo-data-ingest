@@ -1,6 +1,7 @@
 import boto3
 import os
 import logging
+from monzo import Monzo
 
 
 def set_logger_level(logger_to_set):
