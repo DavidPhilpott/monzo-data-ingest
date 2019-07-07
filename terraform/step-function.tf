@@ -22,7 +22,7 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
       },
 
       "Was Key Accepted?": {
-        "InputPath": "$.auth_granted"
+        "InputPath": "$.auth_granted",
         "Type": "Choice",
         "Choices": [
           {
