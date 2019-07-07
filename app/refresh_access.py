@@ -1,11 +1,9 @@
 import boto3
 import os
 import logging
-import requests
-import json
 
 
-def set_logger_level(log):
+def set_logger_level(logger_to_set):
     """Get logging_level from environment and use to set the logging level."""
     logging_level = os.getenv('logging_level', 'NONE').upper()
     if logging_level is 'NONE':
@@ -14,7 +12,18 @@ def set_logger_level(log):
     else:
         print("Setting logger to level: %s." % logging_level)
     logging_level_name = logging.getLevelName(logging_level)
-    log.setLevel(logging_level_name)
+    logger_to_set.setLevel(logging_level_name)
+    return
+
+
+def set_logger_format(logger_to_format):
+    """Set logger output format to a hardcoded version."""
+    print("Setting logger formatting")
+    log_format = logging.Formatter(fmt='%(asctime)s | %(levelname)s | %(thread)s | %(message)s',
+                                   datefmt='%d-%b-%y %H:%M:%S')
+    log_handler = logging.StreamHandler()
+    log_handler.setFormatter(log_format)
+    logger_to_format.addHandler(log_handler)
     return
 
 
@@ -41,7 +50,7 @@ def get_ssm_parameter_value(parameter_name):
 
 
 def refresh_access_key(client_id, client_secret_id, refresh_token):
-    """Submit refresh token to monzo in echange for a new access key and refresh token"""
+    """Submit refresh token to Monzo in exchange for a new access key and refresh token"""
     logger.info("Exchanging refresh token with Monzo.")
     api_url = 'https://api.monzo.com/oauth2/token'
     refresh_params = {'grant_type': 'refresh_token',
@@ -72,7 +81,7 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     #                                    type=string_type,
     #                                    overwrite=True)
     response = "Test Response"
-    logger.debug("Write response: %s")
+    logger.debug("Write response: %s" % response)
     logger.info("Write finished.")
     return
 
@@ -89,15 +98,15 @@ def main(event, context):
     refresh_token = get_ssm_parameter_value(parameter_name='refresh_token_parameter')
     logger.info("Finished getting parameter values.")
     logger.info("-- Getting New Access Tokens --")
-    new_access_key, new_refresh_token = refresh_access_key(client_id = client_id,
-                                                           client_secret_id = client_secret_id,
-                                                           refresh_token = refresh_token)
+    new_access_key, new_refresh_token = refresh_access_key(client_id=client_id,
+                                                           client_secret_id=client_secret_id,
+                                                           refresh_token=refresh_token)
     logger.info("Finished getting new access tokens.")
     logger.info("-- Writing New Tokens to SSM -- ")
     write_ssm_parameter_value(parameter_name='access_key',
                               new_parameter_value=new_access_key,
-                              is_secure = True)
+                              is_secure=True)
     write_ssm_parameter_value(parameter_name='refresh_token_parameter',
                               new_parameter_value=new_refresh_token,
-                              is_secure = True)
+                              is_secure=True)
     return
