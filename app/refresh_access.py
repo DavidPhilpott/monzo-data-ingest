@@ -99,7 +99,7 @@ def main(event, context):
     set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    access_key = get_ssm_parameter_value(parameter_name='access_key')
+    access_key = get_ssm_parameter_value(parameter_name='access_key_parameter')
     client_id = get_ssm_parameter_value(parameter_name='client_id_parameter')
     client_secret_id = get_ssm_parameter_value(parameter_name='client_secret_id_parameter')
     refresh_token = get_ssm_parameter_value(parameter_name='refresh_token_parameter')
