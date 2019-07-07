@@ -58,7 +58,7 @@ def refresh_access_key(client_id, client_secret_id, refresh_token):
 
 def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     """Write a parameter value to a given parameter name"""
-    logger.info("Writing SSM paraemter value for %s." % parameter_name)
+    logger.info("Writing SSM parameter value for %s." % parameter_name)
     logging.debug("Requesting SSM client.")
     ssm_client = boto3.client('ssm')
     logger.debug("Argument is_secure is %s." % is_secure)
@@ -72,7 +72,7 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     #                                    type=string_type,
     #                                    overwrite=True)
     response = "Test Response"
-    logger.debug("Write reponse: %s")
+    logger.debug("Write response: %s")
     logger.info("Write finished.")
     return
 
@@ -95,10 +95,9 @@ def main(event, context):
     logger.info("Finished getting new access tokens.")
     logger.info("-- Writing New Tokens to SSM -- ")
     write_ssm_parameter_value(parameter_name='access_key',
-                              new_parameter_value=new_access_key)
+                              new_parameter_value=new_access_key,
+                              is_secure = True)
     write_ssm_parameter_value(parameter_name='refresh_token_parameter',
-                              new_parameter_value=new_refresh_token)
-
+                              new_parameter_value=new_refresh_token,
+                              is_secure = True)
     return
-
- 
