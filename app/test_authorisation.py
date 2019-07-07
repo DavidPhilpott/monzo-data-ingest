@@ -56,7 +56,7 @@ def authorisation_test(access_key):
     """TODO: Change this exception handling to check for http error codes coming back from requests"""
     logger.info("Testing access to Monzo.")
     api_url = r'https://api.monzo.com/ping/whoami'
-    test_params = {'access_key': access_key}
+    test_params = {'Authorization': 'Bearer %s' % access_key}
     try:
         logger.debug("Making request to whoami API.")
         logger.debug("URL: %s, Parameters: %s" % (api_url, test_params.keys()))

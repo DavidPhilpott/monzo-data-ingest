@@ -69,7 +69,7 @@ def main(event, context):
     for account in account_list:
         account_id = account['id']
         print('id: %s, closed: %s' %(account['id'], account['closed']))
-        balance = monzo.get_balance(account_id) # Get your balance object
+        balance = monzo_client.get_balance(account_id) # Get your balance object
         print("Balance:")
         print(balance['balance']) # 100000000000
         print("Currency:")
@@ -77,10 +77,10 @@ def main(event, context):
         print("Spend Today:")
         print(balance['spend_today']) # 2000
         print("Transactions:")
-        transactions = monzo.get_transactions(account_id)
+        transactions = monzo_client.get_transactions(account_id)
         print(transactions)
 
-    pots = monzo.get_pots()['pots']
+    pots = monzo_client.get_pots()['pots']
     print("Pots:")
     print(pots)
     return
