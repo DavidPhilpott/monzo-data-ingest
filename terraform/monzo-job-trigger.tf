@@ -8,7 +8,7 @@ resource "aws_lambda_function" "job_trigger_lambda" {
   runtime           = "python3.7"
   filename          = "../app/app.zip"
   source_code_hash  = "${filebase64sha256("../app/app.zip")}"
-  handler           = "create_job.main"
+  handler           = "trigger_job.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
   timeout = var.lambda_timeout
