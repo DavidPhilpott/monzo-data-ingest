@@ -47,3 +47,7 @@ variable lambda_iam_resources {
 variable lambda_timeout {
   type = number
 }
+
+variable core_sns_arn {
+  type = string
+}
