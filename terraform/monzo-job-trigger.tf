@@ -31,7 +31,7 @@ resource "aws_lambda_function" "job_trigger_lambda" {
 resource "aws_cloudwatch_event_rule" "monzo_trigger_once_per_day" {
     name = "monzo-trigger-once-per-day"
     description = "Cron job executing Monzo Data Ingest once per day (8am)"
-    schedule_expression = cron(0 8 * * *)
+    schedule_expression = "cron(0 8 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "trigger_job_trigger_lambda_on_cron" {
