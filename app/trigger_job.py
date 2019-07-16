@@ -86,7 +86,7 @@ def main(event, context):
     set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    sns_topic_arn = get_ssm_parameter_value(parameter_name='target_sns_arn')
+    sns_topic_arn = get_ssm_parameter_value(parameter_name='target_sns_arn_parameter')
     logger.info("Finished getting parameter values.")
 
     logger.info("-- Publish Trigger Message to SNS --")
