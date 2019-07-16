@@ -15,7 +15,7 @@ resource "aws_lambda_function" "job_trigger_lambda" {
 
   environment {
     variables = {
-      target_sns_arn = var.core_sns_arn,
+      target_sns_arn_parameter = var.core_sns_arn_parameter,
       logging_level = var.logging_level,
     }
   }

@@ -48,6 +48,6 @@ variable lambda_timeout {
   type = number
 }
 
-variable core_sns_arn {
+variable core_sns_arn_parameter {
   type = string
 }
