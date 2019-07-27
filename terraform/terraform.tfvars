@@ -25,4 +25,4 @@ lambda_iam_resources = [
 
 lambda_timeout = 180
 
-core_sns_arn_parameter = "arn:aws:sns:eu-west-1:020968065558:core-message-inbox"
+core_sns_arn_parameter = "core-message-inbox-arn"
