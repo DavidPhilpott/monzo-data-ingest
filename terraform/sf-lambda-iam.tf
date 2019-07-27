@@ -43,7 +43,17 @@ data "aws_iam_policy_document" "monzo_lambda_core_policy_document" {
     resources = [
       "arn:aws:logs:${var.region}:${var.aws_account_id}:*"
     ]
-}
+  }
+
+  statement {
+    actions = [
+      "sns:Publish",
+      "sns:Subscribe",
+    ]
+    resources = [
+      var.core_sns_arn_parameter_arn,
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "monzo_lambda_core_policy" {
