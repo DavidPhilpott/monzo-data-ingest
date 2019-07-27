@@ -17,7 +17,7 @@ lambda_iam_actions = [
     "secretsmanager:Get*",
     "ssm:Get*",
     "ssm:List*",
-    "ssm:Put*"
+    "ssm:Put*",
   ]
 
 lambda_iam_resources = [

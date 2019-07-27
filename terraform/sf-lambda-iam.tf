@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "monzo_lambda_core_policy_document" {
       "sns:Subscribe",
     ]
     resources = [
-      var.core_sns_arn_parameter_arn,
+      "*",
     ]
   }
 }
