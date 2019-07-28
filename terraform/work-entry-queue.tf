@@ -42,5 +42,5 @@ resource "aws_sns_topic_subscription" "sub-core-sns-to-monzo-work-entry-queue" {
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.work_entry_queue.arn
 
-  #filter_policy = "{\"service\": [\"Monzo-Data-Ingest\"]}"
+  filter_policy = "{\"service\": [\"Monzo-Data-Ingest\"]}"
 }
