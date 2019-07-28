@@ -28,7 +28,7 @@ resource "aws_sqs_queue_policy" "work_entry_queue_policy" {
       "Resource": "${aws_sqs_queue.work_entry_queue.arn}",
       "Condition": {
         "ArnEquals": {
-          "aws:SourceArn": "${var.core_sns_arn_parameter_arn}"
+          "aws:SourceArn": "arn:aws:sns:${var.region}:${var.aws_account_id}:core-message-inbox"
         }
       }
     }
