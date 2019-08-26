@@ -86,6 +86,7 @@ def build_job_trigger_message_body():
     logger.info("Message body built.")
     return message_body
 
+
 def publish_message_to_sns(sns_message_attributes, sns_message_body, topic_arn):
     """Publish a message to a given SNS"""
     logger.info("Publishing message to SNS.")

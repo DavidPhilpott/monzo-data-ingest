@@ -3,6 +3,7 @@ import os
 import logging
 import requests
 import json
+from datetime import date, timedelta
 
 
 def set_logger_level(logger_to_set):
@@ -78,6 +79,26 @@ def extract_date_to_process_from_message(event_message):
     return date_to_process
 
 
+def build_step_function_input_json(date_to_process):
+    """Build input json for step function. Contains date identifying relevant data for this job."""
+    logger.info("Building input json for step function.")
+    input_dict = {}
+    input_dict['date_to_process'] = date_to_process
+    input_json = json.dumps(input_dict)
+    logger.debug("Created string is: %s" % input_json)
+    logger.info("Finished creating input json.")
+    return input_json
+
+
+def generate_execution_name(date_to_process):
+    """Create a unique execution name for this job"""
+    logger.info("Creating execution name.")
+    current_time_string = date.today().strftime('%Y%m%d%H%M%S')
+    yesterday = date.today() - timedelta(days=1)
+    yesterday_formatted = yesterday.strftime('%Y-%m-%d')
+    execution_name = "Monzo-Data-Ingest-%s-%s" % (date_to_process, current_time_string)
+
+
 def main(event, context):
     print("-- Instantiating logger --")
     global logger
@@ -88,16 +109,14 @@ def main(event, context):
 
     logger.info("-- Getting Parameter Values --")
     target_step_function_arn = os.getenv('target_step_function_arn')
-    #sns_topic_arn = get_ssm_parameter_value(parameter_name='target_sns_arn_parameter')
     logger.info("Finished getting parameter values.")
 
-    logger.info("Dumping event:")
-    print(event)
-    logger.info("Dumping context:")
-    print(context)
-
+    logger.info("-- Getting Job Information --")
     date_to_process = extract_date_to_process_from_message(event_message=event)
-    logger.info("Date to process: %s" %date_to_process)
-    logger.info("-- Placeholder --")
+    step_function_input = build_step_function_input_json(date_to_process=date_to_process)
+    execution_name = generate_execution_name(date_to_process)
+    logger.info("Finished getting job information.")
+
+    logger.info("-- Executing Step Function --")
     logger.info("Function finished.")
     return
