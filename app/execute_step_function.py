@@ -72,7 +72,8 @@ def execute_step_function(step_function_arn, step_function_execution_name, input
 def extract_date_to_process_from_message(event_message):
     """Reach in to sns message (from lambda event) and extract the date_to_process value"""
     logger.info("Extracting date to process from lambda event.")
-    date_to_process = event_message['records'][0]['message_attributes']['date_to_process']
+    job_message = json.loads(event_message['Records'][0]['body'])
+    date_to_process = job_message['MessageAttributes']['date_to_process']['Value']
     logger.debug("Found value %s." % date_to_process)
     return date_to_process
 
@@ -86,6 +87,7 @@ def main(event, context):
     set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
+    target_step_function_arn = os.getenv('target_step_function_arn')
     #sns_topic_arn = get_ssm_parameter_value(parameter_name='target_sns_arn_parameter')
     logger.info("Finished getting parameter values.")
 
