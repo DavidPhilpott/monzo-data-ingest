@@ -57,9 +57,10 @@ data "aws_iam_policy_document" "monzo_lambda_core_policy_document" {
 
   statement {
     actions = [
-      "sqs:ReceiveMessage",
+      "sqs:ChangeMessageVisibility",
       "sqs:DeleteMessage",
       "sqs:GetQueueAttributes",
+      "sqs:ReceiveMessage",
     ]
     resources = [
       "*",
