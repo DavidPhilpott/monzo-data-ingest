@@ -94,9 +94,10 @@ def generate_execution_name(date_to_process):
     """Create a unique execution name for this job"""
     logger.info("Creating execution name.")
     current_time_string = date.today().strftime('%Y%m%d%H%M%S')
-    yesterday = date.today() - timedelta(days=1)
-    yesterday_formatted = yesterday.strftime('%Y-%m-%d')
     execution_name = "Monzo-Data-Ingest-%s-%s" % (date_to_process, current_time_string)
+    logger.debug("Execution name is '%s'" % execution_name)
+    logger.info("Finished generating execution name.")
+    return execution_name
 
 
 def main(event, context):
@@ -118,5 +119,8 @@ def main(event, context):
     logger.info("Finished getting job information.")
 
     logger.info("-- Executing Step Function --")
+    execution_response = execute_step_function(step_function_arn=target_step_function_arn,
+                                               step_function_execution_name=execution_name,
+                                               input_values=step_function_input)
     logger.info("Function finished.")
     return
