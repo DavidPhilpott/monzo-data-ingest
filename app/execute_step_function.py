@@ -76,6 +76,7 @@ def extract_date_to_process_from_message(event_message):
     job_message = json.loads(event_message['Records'][0]['body'])
     date_to_process = job_message['MessageAttributes']['date_to_process']['Value']
     logger.debug("Found value %s." % date_to_process)
+    logger.info("Finished extracting date to process.")
     return date_to_process
 
 
