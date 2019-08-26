@@ -33,4 +33,6 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   enabled          = true
   function_name    = aws_lambda_function.step_function_executor_lambda.arn
   batch_size       = 1
+
+  depends_on = [aws_iam_role.iam_role_lambdas, aws_iam_role_policy.monzo_lambda_core_policy]
 }
