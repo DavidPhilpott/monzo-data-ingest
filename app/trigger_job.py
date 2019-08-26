@@ -3,6 +3,7 @@ import os
 import logging
 import requests
 import json
+from datetime import date, timedelta
 
 
 def set_logger_level(logger_to_set):
@@ -58,9 +59,22 @@ def build_job_trigger_message():
     sns_message_attributes["service"] = {
         "DataType": "String",
         "StringValue": "Monzo-Data-Ingest"}
+    sns_message_attributes["date_to_process"] = {
+        "DataType": "String",
+        "StringValue": get_yesterdays_date()
+    }
     logger.debug("Message attributes to be publish are: %s" % str(sns_message_attributes))
     logger.info("Message built.")
     return sns_message_attributes
+
+
+def get_yesterdays_date():
+    """Construct yesterday's date as a string in YYYY-MM-DD"""
+    logger.info("Fetching yesterday's date as YYYY-MM-DD.")
+    yesterday = date.today() - timedelta(days=1)
+    yesterday_formatted = yesterday.strftime('%Y-%m-%d')
+    logger.debug("Date obtained: '%s'." % yesterday_formatted)
+    return yesterday_formatted
 
 
 def publish_message_to_sns(sns_message_attributes, topic_arn):
@@ -93,5 +107,6 @@ def main(event, context):
     message_to_publish = build_job_trigger_message()
     publish_response = publish_message_to_sns(sns_message_attributes=message_to_publish,
                                               topic_arn=sns_topic_arn)
+    logger.debug("Publish response: %s." % publish_response)
     logger.info("Function finished.")
     return
