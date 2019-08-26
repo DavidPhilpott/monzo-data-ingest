@@ -15,7 +15,7 @@ resource "aws_lambda_function" "step_function_executor_lambda" {
 
   environment {
     variables = {
-      target_step_function_arn = aws_sfn_state_machine.sf_state_machine.arn,
+      target_step_function_arn = aws_sfn_state_machine.sf_state_machine.id,
       logging_level = var.logging_level,
     }
   }
