@@ -69,6 +69,14 @@ def execute_step_function(step_function_arn, step_function_execution_name, input
     return response
 
 
+def extract_date_to_process_from_message(event_message):
+    """Reach in to sns message (from lambda event) and extract the date_to_process value"""
+    logger.info("Extracting date to process from lambda event.")
+    date_to_process = event_message['records'][0]['message_attributes']['date_to_process']
+    logger.debug("Found value %s." % date_to_process)
+    return date_to_process
+
+
 def main(event, context):
     print("-- Instantiating logger --")
     global logger
@@ -86,6 +94,8 @@ def main(event, context):
     logger.info("Dumping context:")
     print(context)
 
+    date_to_process = extract_date_to_process_from_message(event_message=event)
+    logger.info("Date to process: %s" %date_to_process)
     logger.info("-- Placeholder --")
     logger.info("Function finished.")
     return
