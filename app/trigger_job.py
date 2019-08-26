@@ -52,9 +52,9 @@ def get_ssm_parameter_value(parameter_name):
     return parameter_value
 
 
-def build_job_trigger_message():
+def build_job_trigger_message_attributes():
     """Create an SNS message for the core SNS to trigger Monzo data ingest jobs."""
-    logger.info("Creating message for SNS to publish.")
+    logger.info("Creating message attributes for publishing to SNS.")
     sns_message_attributes = {}
     sns_message_attributes["service"] = {
         "DataType": "String",
@@ -77,7 +77,16 @@ def get_yesterdays_date():
     return yesterday_formatted
 
 
-def publish_message_to_sns(sns_message_attributes, topic_arn):
+def build_job_trigger_message_body():
+    """Construct the mesage body for the monzo trigger job."""
+    logger.info("Creating message body for publishing to SNS.")
+    date_to_process = get_yesterdays_date()
+    message_body = "Monzo data ingest job for %s." % date_to_process
+    logger.debug("Message body to be publish is: %s" % message_body)
+    logger.info("Message body built.")
+    return message_body
+
+def publish_message_to_sns(sns_message_attributes, sns_message_body, topic_arn):
     """Publish a message to a given SNS"""
     logger.info("Publishing message to SNS.")
     logger.debug("Creating SNS client.")
@@ -85,7 +94,7 @@ def publish_message_to_sns(sns_message_attributes, topic_arn):
     logger.debug("About to publish message to topic: %s." % sns_message_attributes)
     response = sns_client.publish(TopicArn=topic_arn,
                                   Subject='Monzo-Data-Ingest Job Trigger',
-                                  Message='', #json.dumps(sns_message_attributes),
+                                  Message=sns_message_body,
                                   MessageAttributes=sns_message_attributes)
     logger.info("Message published. Returning.")
     return response
@@ -104,8 +113,10 @@ def main(event, context):
     logger.info("Finished getting parameter values.")
 
     logger.info("-- Publish Trigger Message to SNS --")
-    message_to_publish = build_job_trigger_message()
-    publish_response = publish_message_to_sns(sns_message_attributes=message_to_publish,
+    message_attributes = build_job_trigger_message_attributes()
+    message_body = build_job_trigger_message_body()
+    publish_response = publish_message_to_sns(sns_message_attributes=message_attributes,
+                                              sns_message_body=message_body,
                                               topic_arn=sns_topic_arn)
     logger.debug("Publish response: %s." % publish_response)
     logger.info("Function finished.")
