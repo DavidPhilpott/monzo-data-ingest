@@ -63,7 +63,7 @@ def build_job_trigger_message_attributes():
         "DataType": "String",
         "StringValue": get_yesterdays_date()
     }
-    logger.debug("Message attributes to be publish are: %s" % str(sns_message_attributes))
+    logger.debug("Message attributes to be published are: %s" % str(sns_message_attributes))
     logger.info("Message built.")
     return sns_message_attributes
 
