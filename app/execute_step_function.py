@@ -50,6 +50,25 @@ def get_ssm_parameter_value(parameter_name):
     logger.info("Value found. Returning...")
     return parameter_value
 
+
+def execute_step_function(step_function_arn, step_function_execution_name, input_values):
+    """Call a step function arn with a given execution name and input"""
+    logger.info("Starting step function execution '%s'." % step_function_execution_name)
+    logger.debug("Step function ARN: %s." % step_function_arn)
+    logger.debug("Step function input values:")
+    logger.debug(input_values)
+    logger.debug("Creating step function client.")
+    step_function_client = boto3.client('stepfunctions')
+    logger.debug("Calling execution.")
+    response = step_function_client.start_execution(
+        stateMachineArn=step_function_arn,
+        name=step_function_execution_name,
+        input=json.dumps(input_values)
+    )
+    logger.debug("Finished. Returning response...")
+    return response
+
+
 def main(event, context):
     print("-- Instantiating logger --")
     global logger
@@ -59,7 +78,7 @@ def main(event, context):
     set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    sns_topic_arn = get_ssm_parameter_value(parameter_name='target_sns_arn_parameter')
+    #sns_topic_arn = get_ssm_parameter_value(parameter_name='target_sns_arn_parameter')
     logger.info("Finished getting parameter values.")
 
     logger.info("-- Placeholder --")
