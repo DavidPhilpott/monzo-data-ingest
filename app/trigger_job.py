@@ -85,7 +85,7 @@ def publish_message_to_sns(sns_message_attributes, topic_arn):
     logger.debug("About to publish message to topic: %s." % sns_message_attributes)
     response = sns_client.publish(TopicArn=topic_arn,
                                   Subject='Monzo-Data-Ingest Job Trigger',
-                                  Message=json.dumps(sns_message_attributes),
+                                  Message='', #json.dumps(sns_message_attributes),
                                   MessageAttributes=sns_message_attributes)
     logger.info("Message published. Returning.")
     return response
