@@ -81,6 +81,11 @@ def main(event, context):
     #sns_topic_arn = get_ssm_parameter_value(parameter_name='target_sns_arn_parameter')
     logger.info("Finished getting parameter values.")
 
+    logger.info("Dumping event:")
+    print(event)
+    logger.info("Dumping context:")
+    print(context)
+
     logger.info("-- Placeholder --")
     logger.info("Function finished.")
     return
