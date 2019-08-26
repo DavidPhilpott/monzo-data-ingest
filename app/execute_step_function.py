@@ -3,7 +3,7 @@ import os
 import logging
 import requests
 import json
-from datetime import date, timedelta
+from datetime import datetime
 
 
 def set_logger_level(logger_to_set):
@@ -94,7 +94,7 @@ def build_step_function_input_json(date_to_process):
 def generate_execution_name(date_to_process):
     """Create a unique execution name for this job"""
     logger.info("Creating execution name.")
-    current_time_string = date.today().strftime('%Y%m%d%H%M%S')
+    current_time_string = datetime.now().strftime('%Y%m%d%H%M%S')
     execution_name = "Monzo-Data-Ingest-%s-%s" % (date_to_process, current_time_string)
     logger.debug("Execution name is '%s'" % execution_name)
     logger.info("Finished generating execution name.")
