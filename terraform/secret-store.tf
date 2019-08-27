@@ -1,3 +1,4 @@
+//SSM Parameters containing auth information for Monzo
 resource "aws_ssm_parameter" "client_id" {
   name        = "monzo-data-ingest-client-id"
   description = "Client ID of the Monzo app which will be used to access the API."

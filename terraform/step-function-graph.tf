@@ -1,3 +1,4 @@
+//Builds graph of main ingest state machine
 resource "aws_sfn_state_machine" "sf_state_machine" {
   name     = "monzo-data-ingest-state-machine"
   role_arn = aws_iam_role.iam_for_sf.arn

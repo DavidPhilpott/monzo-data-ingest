@@ -1,5 +1,4 @@
-//Creates a Lambda and cront job that push job notifciations onto the core SNS to trigger Monzo jobs
-
+//Lambda function running on a cron that pushes Monzo Ingest jobs to the central SNS
 resource "aws_lambda_function" "job_trigger_lambda" {
   function_name = "monzo-data-ingest-job-trigger"
   description   = "Pushes Monzo jobs to core SNS based on cron."
@@ -40,7 +39,7 @@ resource "aws_cloudwatch_event_target" "trigger_job_trigger_lambda_on_cron" {
     arn = "${aws_lambda_function.job_trigger_lambda.arn}"
 }
 
-resource "aws_lambda_permission" "allow_cloudwatch_to_call_check_foo" {
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
     statement_id = "AllowExecutionFromCloudWatch"
     action = "lambda:InvokeFunction"
     function_name = "${aws_lambda_function.job_trigger_lambda.function_name}"

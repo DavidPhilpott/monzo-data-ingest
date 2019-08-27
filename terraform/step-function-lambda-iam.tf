@@ -1,3 +1,4 @@
+//Blanket role used by Monzo lambdas to access SQS / SNS / SF objects and execute.
 resource "aws_iam_role" "iam_role_lambdas" {
   name = "lambda-role-monzo-data-ingest"
 
@@ -17,9 +18,6 @@ resource "aws_iam_role" "iam_role_lambdas" {
 }
 EOF
 }
-
-
-## EC2 Access Policy
 
 data "aws_iam_policy_document" "monzo_lambda_core_policy_document" {
   statement {
@@ -81,8 +79,6 @@ resource "aws_iam_role_policy" "monzo_lambda_core_policy" {
   role   = aws_iam_role.iam_role_lambdas.id
   policy = data.aws_iam_policy_document.monzo_lambda_core_policy_document.json
 }
-
-## Other Access Policy
 
 data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
   statement {

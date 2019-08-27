@@ -1,5 +1,4 @@
-//Creates a Lambda and cront job that push job notifciations onto the core SNS to trigger Monzo jobs
-
+//Creates a Lambda and cron job that pushes Monzo ingest job notifciations onto the core SNS
 resource "aws_lambda_function" "step_function_executor_lambda" {
   function_name = "monzo-data-ingest-step-function-executor"
   description   = "Starts execution of Monzo step function based on incoming SQS items."
