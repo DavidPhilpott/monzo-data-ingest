@@ -10,7 +10,7 @@ resource "aws_lambda_function" "job_trigger_lambda" {
   handler           = "trigger_job.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
-  timeout = var.lambda_timeout
+  timeout = 180
 
   environment {
     variables = {

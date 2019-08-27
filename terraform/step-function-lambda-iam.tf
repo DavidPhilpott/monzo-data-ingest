@@ -82,19 +82,21 @@ resource "aws_iam_role_policy" "monzo_lambda_core_policy" {
 
 data "aws_iam_policy_document" "monzo_lambda_custom_policy_document" {
   statement {
-    actions   = var.lambda_iam_actions
-    resources = concat(
-      [
-        aws_ssm_parameter.client_id.arn,
-        aws_ssm_parameter.redirect_uri.arn,
-        aws_ssm_parameter.client_secret_id.arn,
-        aws_ssm_parameter.access_key.arn,
-        aws_ssm_parameter.refresh_token.arn,
-        aws_ssm_parameter.monzo_bootstrap_token.arn,
-        var.core_sns_arn_parameter_arn,
-      ],
-      var.lambda_iam_resources,
-    )
+    actions = [
+      "secretsmanager:List*",
+      "secretsmanager:Get*",
+      "ssm:Get*",
+      "ssm:List*",
+      "ssm:Put*",
+    ]
+    resources = [
+      aws_ssm_parameter.client_id.arn,
+      aws_ssm_parameter.redirect_uri.arn,
+      aws_ssm_parameter.client_secret_id.arn,
+      aws_ssm_parameter.access_key.arn,
+      aws_ssm_parameter.refresh_token.arn,
+      aws_ssm_parameter.monzo_bootstrap_token.arn,
+    ]
   }
 }
 

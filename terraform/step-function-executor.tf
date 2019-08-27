@@ -10,7 +10,7 @@ resource "aws_lambda_function" "step_function_executor_lambda" {
   handler           = "execute_step_function.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
-  timeout = var.lambda_timeout
+  timeout = 180
 
   environment {
     variables = {

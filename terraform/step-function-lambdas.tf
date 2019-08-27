@@ -9,7 +9,7 @@ resource "aws_lambda_function" "refresh_auth_tokens" {
   handler           = "refresh_access.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
-  timeout = var.lambda_timeout
+  timeout = 180
 
   environment {
     variables = {
@@ -39,7 +39,8 @@ resource "aws_lambda_function" "ingest_data" {
   source_code_hash  = "${filebase64sha256("../app/app.zip")}"
   handler           = "ingest_data.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
-  timeout = var.lambda_timeout
+  
+  timeout = 180
 
   environment {
     variables = {
@@ -67,7 +68,7 @@ resource "aws_lambda_function" "check_valid_auth_tokens" {
   handler           = "test_authorisation.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
 
-  timeout = var.lambda_timeout
+  timeout = 180
 
   environment {
     variables = {

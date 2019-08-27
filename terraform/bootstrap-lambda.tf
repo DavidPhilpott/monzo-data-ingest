@@ -9,6 +9,7 @@ resource "aws_lambda_function" "bootstrap_monzo_auth" {
   source_code_hash  = "${filebase64sha256("../app/app.zip")}"
   handler           = "bootstrap-auth.main"
   layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
+  timeout           = 180
 
   environment {
     variables = {
