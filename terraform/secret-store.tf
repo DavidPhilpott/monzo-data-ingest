@@ -38,6 +38,7 @@ resource "aws_ssm_parameter" "client_secret_id" {
     ignore_changes = [
       value,
       overwrite,
+      tags,
     ]
   }
 
@@ -60,6 +61,7 @@ resource "aws_ssm_parameter" "access_key" {
     ignore_changes = [
       value,
       overwrite,
+      tags,
     ]
   }
 
@@ -89,6 +91,7 @@ resource "aws_ssm_parameter" "refresh_token" {
     ignore_changes = [
       value,
       overwrite,
+      tags,
     ]
   }
 }
@@ -111,6 +114,7 @@ resource "aws_ssm_parameter" "monzo_bootstrap_token" {
     ignore_changes = [
       value,
       overwrite,
+      tags,
     ]
   }
 }
