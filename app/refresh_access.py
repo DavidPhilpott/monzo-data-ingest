@@ -1,6 +1,6 @@
 import logging
-import app.logger_setup as logger_setup
-import app.aws_utilities as aws
+import logger_setup as logger_setup
+import aws_utilities as aws
 import requests
 import json
 
