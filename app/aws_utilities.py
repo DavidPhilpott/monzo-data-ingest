@@ -5,7 +5,7 @@ import os
 
 def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
     """Write a parameter value to a given parameter name"""
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('__main__.' + __name__)
     logger.info("Writing SSM parameter value for %s." % parameter_name)
     logger.debug("Searching for environmental variable.")
     try:
@@ -36,7 +36,7 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
 
 def get_ssm_parameter_value(parameter_name):
     """Make a get request to SSM for the given parameter and return un-encrypted value"""
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('main.' + __name__)
     logger.info("Seeking SSM value for environmental variable '%s'." % parameter_name)
     try:
         parameter_env = os.getenv(parameter_name, None)
