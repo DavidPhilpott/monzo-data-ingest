@@ -31,7 +31,7 @@ def get_yesterdays_date():
 
 
 def build_job_trigger_message_body():
-    """Construct the mesage body for the monzo trigger job."""
+    """Construct the message body for the monzo trigger job."""
     logger.info("Creating message body for publishing to SNS.")
     date_to_process = get_yesterdays_date()
     message_body = "Monzo data ingest job for %s." % date_to_process
