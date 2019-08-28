@@ -5,3 +5,4 @@ venv/
 .idea/
 temp_token_swap.json
 temp_tokens.txt
+__pycache__/
