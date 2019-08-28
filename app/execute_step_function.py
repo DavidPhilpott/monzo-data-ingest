@@ -6,28 +6,6 @@ import json
 from datetime import datetime
 
 
-def get_ssm_parameter_value(parameter_name):
-    """Make a get request to SSM for the given parameter and return un-encrypted value"""
-    logger.info("Seeking SSM value for environmental variable '%s'." % parameter_name)
-    try:
-        parameter_env = os.getenv(parameter_name, None)
-        if parameter_env is not None:
-            logger.debug("Found environmental variable. Associated value is set to '%s'" % parameter_env)
-        else:
-            raise ValueError("Could not find value for environmental variable '%s'" % parameter_name)
-    except ValueError as e:
-        logger.exception(e, exc_info=False)
-        raise e
-    logger.debug("Creating SSM client.")
-    ssm_client = boto3.client('ssm')
-    logger.debug("Requesting un-encrypted parameter information for '%s'." % parameter_env)
-    parameter_info = ssm_client.get_parameter(Name=parameter_env, WithDecryption=True)
-    logger.debug("Returned parameter_info dictionary. Seeking ['Parameter']['Value'].")
-    parameter_value = parameter_info['Parameter']['Value']
-    logger.info("Value found. Returning...")
-    return parameter_value
-
-
 def execute_step_function(step_function_arn, step_function_execution_name, input_values):
     """Call a step function arn with a given execution name and input"""
     logger.info("Starting step function execution '%s'." % step_function_execution_name)
