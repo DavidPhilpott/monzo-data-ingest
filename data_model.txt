@@ -1,0 +1,117 @@
+// MONZO_ACCOUNT_HUB //
+account_id (NK)
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_ACCOUNT_SATELLITE //
+account_id (NK)
+account_desc
+account_create_dt
+account_balance
+account_total_balance
+account_currency
+account_spend_today
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_POT_HUB //
+pot_id (NK)
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_POT_SATELLITE //
+pot_id (NK)
+pot_name
+pot_style
+pot_balance
+pot_currency
+pot_created_dt
+pot_updated_dt
+pot_deleted
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+//MONZO_ACCOUNT_POT_LINK //
+account_id (NK)
+pot_id (NK)
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_TRANSACTION_HUB //
+transaction_id (NK)
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+
+//MONZO_TRANSACTION_SATELLITE//
+transaction_id (NK)
+transaction_account_balance
+transaction_amount
+transaction_created_dt
+transaction_currency
+transaction_description
+transaction_metadata
+transaction_notes
+transaction_is_load
+transaction_settled_dt
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_ACCOUNT_TRANSACTION_LINK //
+account_id (NK)
+transaction_id (NK)
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_MERCHANT_HUB //
+merchant_id (NK)
+merchant_group_id (NK)
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_MERCHANT_SATELLITE //
+merchant_id (NK)
+merchant_group_id (NK)
+merchant_created_dt
+merchant_logo
+merchant_emoji
+merchant_name
+merchant_category
+merchant_road
+merchant_city
+merchant_country
+merchant_latitude
+merchant_longitude
+merchant_postcode
+merchant_region
+record_deleted (??)
+job_name
+batch_name
+load_ts
+
+// MONZO_TRANSACTION_MERCHANT_LINK //
+transaction_id (NK)
+merchant_id (NK)
+merchant_group_id (NK)
+record_deleted (??)
+job_name
+batch_name
+load_ts
