@@ -1,3 +1,11 @@
+S3
+	Monzo
+		Accounts
+		Balance
+		Pots
+		Transactions
+
+
 List accounts
 
 {
@@ -10,9 +18,14 @@ List accounts
     ]
 }
 
+account id (NK)
+account description
+account created date
+
 
 Balance
 
+account_id <- from external
 {
     "balance": 5000,
     "total_balance": 6000,
@@ -20,8 +33,14 @@ Balance
     "spend_today": 0
 }
 
+balance
+total balance
+currency
+spent today
+
 Pots
 
+account_id <- from external?
 {
   "pots": [
     {
@@ -37,8 +56,19 @@ Pots
   ]
 }
 
+pot id (NK)
+pot name
+pot style
+pot balance
+pot currency
+pot created dt
+pot updated dt
+pot deleted
+
+
 Transactions
 
+account_id <- from external 
 {
     "transaction": {
         "account_balance": 13013,
@@ -72,8 +102,35 @@ Transactions
     }
 }
 
+merchant id (NK)
+merchant group id (NK)
+merchant created dt
+merchant logo
+merchant emoji
+merchant name
+merchant category
+merchant road
+merchant city
+merchant country
+merchant latitude
+merchant longitude
+merchant postcode
+merchant region
+
+transaction id (NK)
+account balance
+transaction amount
+transaction created dt
+transaction currency
+transaction description
+transaction metadata
+transaction notes
+transaction is load (??)
+transaction settled dt 
+
 List transactions
 
+account_id <- from external
 {
     "transactions": [
         {
