@@ -63,6 +63,7 @@ def write_data_to_s3(s3_client, bucket_name, target_path, data_to_write):
 
 
 def main(event, context):
+    print(event)
     print("-- Instantiating logger --")
     global logger
     logger = logging.getLogger(__name__)
