@@ -48,7 +48,8 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
       "Ingest Data": {
         "Type": "Task",
         "Resource": "arn:aws:lambda:eu-west-1:020968065558:function:monzo-data-ingest-ingest-data",
-        "Next": "Ingest Account Data"
+        "Next": "Ingest Account Data",
+        "ResultPath": null
       },
 
       "Ingest Account Data": {
