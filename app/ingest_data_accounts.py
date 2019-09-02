@@ -57,7 +57,7 @@ def write_data_to_s3(s3_client, bucket_name, target_path, data_to_write):
     logger.debug("Bucket name is %s. Target path is %s" % (bucket_name, target_path))
     s3_client.put_object(Body=data_to_write,
                          Bucket=bucket_name,
-                         key=target_path)
+                         Key=target_path)
     logger.info("Completed writing to s3. Returning.")
     return
 
