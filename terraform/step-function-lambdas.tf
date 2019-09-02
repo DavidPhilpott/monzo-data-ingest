@@ -103,6 +103,7 @@ resource "aws_lambda_function" "ingest_account_data" {
       data_lake_bucket_name = "dp-core-data-lake",
       environment = "Prod",
       logging_level = var.logging_level,
+      access_key_parameter = aws_ssm_parameter.access_key.name,
     }
   }
 
