@@ -43,7 +43,7 @@ def main(event, context):
     logger.info("-- Testing Current Access Keys --")
     if authorisation_test(access_key) is True:
         logger.info("Authorisation test PASSED. Keys do not need to be refreshed.")
-        return {"auth_granted": "true"}
+        return True
     else:
         logger.info("Authorisation test FAILED. Keys need to be refreshed.")
-        return {"auth_granted": "false"}
+        return False
