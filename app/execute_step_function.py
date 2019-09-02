@@ -38,12 +38,14 @@ def build_step_function_input_json(date_to_process):
     """Build input json for step function. Contains date identifying relevant data for this job."""
     logger.info("Building input json for step function.")
     input_string = '{"date_to_process": "%s"}' % date_to_process
+    input_dict = {}
+    input_dict['date_to_process'] = date_to_process
     #input_dict = {}
     #input_dict['date_to_process'] = date_to_process
     #input_json = json.dumps(input_dict)
     logger.debug("Created string is: %s" % input_string)
     logger.info("Finished creating input json.")
-    return input_string
+    return input_dict
 
 
 def generate_execution_name(date_to_process):
