@@ -96,5 +96,5 @@ def main(event, context):
     account_list = get_account_list(account_data)
     logger.debug("Account list is %s" % account_list)
     logger.info("Complete.")
-    return {"account_list": account_list}
+    return account_list
 
