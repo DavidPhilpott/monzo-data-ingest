@@ -84,3 +84,32 @@ resource "aws_lambda_function" "check_valid_auth_tokens" {
     local.common_tags
   )
 }
+
+resource "aws_lambda_function" "ingest_account_data" {
+  function_name = "monzo-data-ingest-ingest-account-data"
+  description   = "Requests Monzo account data and writes to S3"
+  role          = aws_iam_role.iam_role_lambdas.arn
+
+  runtime           = "python3.7"
+  filename          = "../app/app.zip"
+  source_code_hash  = "${filebase64sha256("../app/app.zip")}"
+  handler           = "ingest_data_accounts.main"
+  layers            = [aws_lambda_layer_version.monzo_requirements_lambda_layer.arn]
+
+  timeout = 180
+
+  environment {
+    variables = {
+      data_lake_bucket_name = "dp-core-data-lake",
+      environment = var.environment,
+      logging_level = var.logging_level,
+    }
+  }
+
+  tags = merge(
+    {
+      "Name" = "monzo-data-ingest-ingest-account-data"
+    },
+    local.common_tags
+  )
+}
