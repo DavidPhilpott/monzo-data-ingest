@@ -19,6 +19,8 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
         "Type": "Task",
         "Resource": "arn:aws:lambda:eu-west-1:020968065558:function:monzo-data-ingest-check-valid-auth-tokens",
         "Next": "Was Key Accepted?"
+        "ResultPath": "$.auth_granted",
+        "OutputPath": "$"
       },
 
       "Was Key Accepted?": {
