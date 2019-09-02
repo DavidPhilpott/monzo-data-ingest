@@ -81,7 +81,7 @@ def main(event, context):
     logger.info("-- Ingesting Account Data --")
     monzo_client = get_monzo_client(access_key)
     account_data = get_account_data(monzo_client)
-    data_target_path = build_data_lake_target_path(project="Monzo",
+    data_target_path = build_data_lake_target_path(project="monzo",
                                                    environment=environment,
                                                    date=batch_date,
                                                    filename="account-data.json")
