@@ -3,6 +3,7 @@ import boto3
 import logger_setup as logger_setup
 import aws_utilities as aws
 import os
+import json
 from monzo import Monzo
 
 
@@ -88,7 +89,7 @@ def main(event, context):
     write_data_to_s3(s3_client=s3_client,
                      bucket_name=data_lake_bucket,
                      target_path=data_target_path,
-                     data_to_write=account_data)
+                     data_to_write=json.dumps(account_data))
     logger.info("Finished ingesting account data.")
 
     logger.info("Extracting and passing on account list.")
