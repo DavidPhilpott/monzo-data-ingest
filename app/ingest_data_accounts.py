@@ -74,7 +74,7 @@ def main(event, context):
     logger.info("-- Getting Parameter Values --")
     access_key = aws.get_ssm_parameter_value(parameter_name='access_key_parameter')
     data_lake_bucket = os.getenv("data_lake_bucket_name")
-    batch_date = "Get batch date from input"
+    batch_date = event['date_to_process']
     environment = os.getenv("environment")
     logger.info("Finished getting parameter values.")
 
