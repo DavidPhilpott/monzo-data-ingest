@@ -37,13 +37,9 @@ def extract_date_to_process_from_message(event_message):
 def build_step_function_input_json(date_to_process):
     """Build input json for step function. Contains date identifying relevant data for this job."""
     logger.info("Building input json for step function.")
-    input_string = '{"date_to_process": "%s"}' % date_to_process
     input_dict = {}
     input_dict['date_to_process'] = date_to_process
-    #input_dict = {}
-    #input_dict['date_to_process'] = date_to_process
-    #input_json = json.dumps(input_dict)
-    logger.debug("Created string is: %s" % input_string)
+    logger.debug("Created dict is: %s" % str(input_dict))
     logger.info("Finished creating input json.")
     return input_dict
 
