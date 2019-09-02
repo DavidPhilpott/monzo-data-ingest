@@ -101,7 +101,7 @@ resource "aws_lambda_function" "ingest_account_data" {
   environment {
     variables = {
       data_lake_bucket_name = "dp-core-data-lake",
-      environment = var.environment,
+      environment = "Prod",
       logging_level = var.logging_level,
     }
   }
