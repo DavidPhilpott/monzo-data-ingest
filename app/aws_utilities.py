@@ -3,6 +3,7 @@ import logger_setup
 import boto3
 import os
 logger = logging.getLogger(__name__)
+logger.propagate = False
 logger_setup.set_logger_level(logger)
 logger_setup.set_logger_format(logger)
 
