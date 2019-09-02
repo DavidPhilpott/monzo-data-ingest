@@ -9,7 +9,7 @@ from monzo import Monzo
 def main(event, context):
     print("-- Instantiating logger --")
     global logger
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
     logger.propagate = False
     logger_setup.set_logger_level(logger)
     logger_setup.set_logger_format(logger)
