@@ -72,6 +72,14 @@ data "aws_iam_policy_document" "monzo_lambda_core_policy_document" {
     resources = [
       "*"
     ]
+
+  statement {
+    actions = [
+      "s3:*"
+    ]
+    resources = [
+      "*"
+    ]
   }
 }
 
