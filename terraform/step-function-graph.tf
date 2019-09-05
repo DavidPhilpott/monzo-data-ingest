@@ -42,7 +42,8 @@ resource "aws_sfn_state_machine" "sf_state_machine" {
       "Refresh Access": {
         "Type": "Task",
         "Resource": "arn:aws:lambda:eu-west-1:020968065558:function:monzo-data-ingest-refresh-auth-tokens",
-        "Next": "Ingest Data"
+        "Next": "Ingest Data",
+        "ResultPath": null
       },
 
       "Ingest Data": {
