@@ -8,6 +8,26 @@ logger_setup.set_logger_level(logger)
 logger_setup.set_logger_format(logger)
 
 
+def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
+    """Write a parameter value to a given parameter name"""
+    logger.info("Writing SSM parameter value for %s." % parameter_name)
+    logging.debug("Requesting SSM client.")
+    ssm_client = boto3.client('ssm')
+    logger.debug("Argument is_secure is %s." % is_secure)
+    if is_secure is True:
+        string_type = "SecureString"
+    else:
+        string_type = "String"
+    logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_name, string_type))
+    response = ssm_client.put_parameter(Name=parameter_name,
+                                        Value=new_parameter_value,
+                                        Type=string_type,
+                                        Overwrite=True)
+    logger.debug("Write response: %s" % response)
+    logger.info("Write finished.")
+    return
+
+
 def write_ssm_parameter_value_from_env(parameter_name, new_parameter_value, is_secure):
     """Write a parameter value to a given parameter name"""
     logger.info("Writing SSM parameter value for %s." % parameter_name)
@@ -21,21 +41,10 @@ def write_ssm_parameter_value_from_env(parameter_name, new_parameter_value, is_s
     except ValueError as e:
         logger.exception(e, exc_info=False)
         raise e
-    logging.debug("Requesting SSM client.")
-    ssm_client = boto3.client('ssm')
-    logger.debug("Argument is_secure is %s." % is_secure)
-    if is_secure is True:
-        string_type = "SecureString"
-    else:
-        string_type = "String"
-    logging.debug("Writing value to SSM for %s. Type is %s" % (parameter_env, string_type))
-    response = ssm_client.put_parameter(Name=parameter_env,
-                                        Value=new_parameter_value,
-                                        Type=string_type,
-                                        Overwrite=True)
-    logger.debug("Write response: %s" % response)
-    logger.info("Write finished.")
-    return True
+    write_ssm_parameter_value(parameter_name=parameter_env,
+                              new_parameter_value=new_parameter_value,
+                              is_secure=is_secure)
+    return
 
 
 def get_ssm_parameter_value(parameter_name):

@@ -2,7 +2,7 @@ import boto3
 import os
 import logging
 import app.logger_setup as logger_setup
-import app.aws_utilities as aws
+import app.utilities as aws
 import requests
 import json
 
