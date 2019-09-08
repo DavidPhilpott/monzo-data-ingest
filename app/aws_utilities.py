@@ -35,7 +35,7 @@ def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
                                         Overwrite=True)
     logger.debug("Write response: %s" % response)
     logger.info("Write finished.")
-    return
+    return True
 
 
 def get_ssm_parameter_value(parameter_name):
