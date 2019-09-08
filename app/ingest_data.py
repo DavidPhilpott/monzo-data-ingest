@@ -15,7 +15,7 @@ def main(event, context):
     logger_setup.set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    access_key = aws.get_ssm_parameter_value(parameter_name='access_key_parameter')
+    access_key = aws.get_ssm_parameter_value_from_env(parameter_name='access_key_parameter')
     logger.info("Finished getting parameter values.")
     logger.debug("Getting Monzo client.")
     monzo_client = Monzo(access_key)

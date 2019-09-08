@@ -30,9 +30,9 @@ def main(event, context):
     logger_setup.set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    client_id = aws.get_ssm_parameter_value(parameter_name='client_id_parameter')
-    client_secret_id = aws.get_ssm_parameter_value(parameter_name='client_secret_id_parameter')
-    refresh_token = aws.get_ssm_parameter_value(parameter_name='refresh_token_parameter')
+    client_id = aws.get_ssm_parameter_value_from_env(parameter_name='client_id_parameter')
+    client_secret_id = aws.get_ssm_parameter_value_from_env(parameter_name='client_secret_id_parameter')
+    refresh_token = aws.get_ssm_parameter_value_from_env(parameter_name='refresh_token_parameter')
     logger.info("Finished getting parameter values.")
     logger.info("-- Getting New Access Tokens --")
     new_access_key, new_refresh_token = refresh_access_key(client_id=client_id,

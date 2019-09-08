@@ -35,10 +35,10 @@ def main(event, context):
     logger_setup.set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    monzo_bootstrap_token = aws.get_ssm_parameter_value(parameter_name='monzo_bootstrap_token_parameter')
-    client_id = aws.get_ssm_parameter_value(parameter_name='client_id_parameter')
-    client_secret_id = aws.get_ssm_parameter_value(parameter_name='client_secret_id_parameter')
-    redirect_uri = aws.get_ssm_parameter_value(parameter_name='redirect_uri_parameter')
+    monzo_bootstrap_token = aws.get_ssm_parameter_value_from_env(parameter_name='monzo_bootstrap_token_parameter')
+    client_id = aws.get_ssm_parameter_value_from_env(parameter_name='client_id_parameter')
+    client_secret_id = aws.get_ssm_parameter_value_from_env(parameter_name='client_secret_id_parameter')
+    redirect_uri = aws.get_ssm_parameter_value_from_env(parameter_name='redirect_uri_parameter')
     logger.info("Finished getting parameter values.")
     logger.debug("Getting Monzo client.")
 

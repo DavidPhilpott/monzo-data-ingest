@@ -47,7 +47,7 @@ def write_ssm_parameter_value_from_env(parameter_name, new_parameter_value, is_s
     return
 
 
-def get_ssm_parameter_value(parameter_name):
+def get_ssm_parameter_value_from_env(parameter_name):
     """Make a get request to SSM for the given parameter and return un-encrypted value"""
     logger.info("Seeking SSM value for environmental variable '%s'." % parameter_name)
     try:

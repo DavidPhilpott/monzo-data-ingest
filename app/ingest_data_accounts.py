@@ -72,7 +72,7 @@ def main(event, context):
     logger_setup.set_logger_format(logger)
 
     logger.info("-- Getting Parameter Values --")
-    access_key = aws.get_ssm_parameter_value(parameter_name='access_key_parameter')
+    access_key = aws.get_ssm_parameter_value_from_env(parameter_name='access_key_parameter')
     data_lake_bucket = os.getenv("data_lake_bucket_name")
     batch_date = event['date_to_process']
     environment = os.getenv("environment")

@@ -1,6 +1,6 @@
 import boto3
 from moto import mock_ssm
-from app.utilities import write_ssm_parameter_value, write_ssm_parameter_value_from_env
+from app.utilities import write_ssm_parameter_value, write_ssm_parameter_value_from_env, get_ssm_parameter_value_from_env
 import mock
 import os
 
