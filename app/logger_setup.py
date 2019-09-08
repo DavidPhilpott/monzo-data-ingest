@@ -5,7 +5,7 @@ import logging
 def set_logger_level(logger_to_set):
     """Get logging_level from environment and use to set the logging level."""
     logging_level = os.getenv('logging_level', 'NONE').upper()
-    if logging_level is 'NONE':
+    if logging_level == 'NONE':
         print("No logging_level environmental variable found. Defaulting to 'DEBUG'.")
         logging_level = 'DEBUG'
     else:

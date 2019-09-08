@@ -1,6 +1,6 @@
 import logging
-import logger_setup as logger_setup
-import aws_utilities as aws
+import app.logger_setup
+import app.aws_utilities as aws
 import requests
 import json
 
@@ -40,10 +40,10 @@ def main(event, context):
                                                            refresh_token=refresh_token)
     logger.info("Finished getting new access tokens.")
     logger.info("-- Writing New Tokens to SSM -- ")
-    aws.write_ssm_parameter_value(parameter_name='access_key_parameter',
-                                  new_parameter_value=new_access_key,
-                                  is_secure=True)
-    aws.write_ssm_parameter_value(parameter_name='refresh_token_parameter',
-                                  new_parameter_value=new_refresh_token,
-                                  is_secure=True)
+    aws.write_ssm_parameter_value_from_env(parameter_name='access_key_parameter',
+                                           new_parameter_value=new_access_key,
+                                           is_secure=True)
+    aws.write_ssm_parameter_value_from_env(parameter_name='refresh_token_parameter',
+                                           new_parameter_value=new_refresh_token,
+                                           is_secure=True)
     return

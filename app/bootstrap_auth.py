@@ -1,6 +1,6 @@
 import logging
-import logger_setup as logger_setup
-import aws_utilities as aws
+import app.logger_setup as logger_setup
+import app.aws_utilities as aws
 import requests
 
 
@@ -49,12 +49,12 @@ def main(event, context):
                                                                     initial_access_code=monzo_bootstrap_token)
     logger.info("Got tokens.")
     logger.info("-- Writing Access Tokens to SSM --")
-    aws.write_ssm_parameter_value(parameter_name='access_key_parameter',
-                                  new_parameter_value=access_key,
-                                  is_secure=True)
-    aws.write_ssm_parameter_value(parameter_name='refresh_token_parameter',
-                                  new_parameter_value=refresh_token,
-                                  is_secure=True)
+    aws.write_ssm_parameter_value_from_env(parameter_name='access_key_parameter',
+                                           new_parameter_value=access_key,
+                                           is_secure=True)
+    aws.write_ssm_parameter_value_from_env(parameter_name='refresh_token_parameter',
+                                           new_parameter_value=refresh_token,
+                                           is_secure=True)
     logger.info("Finished writing to SSM.")
     return
 

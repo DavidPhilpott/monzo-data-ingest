@@ -1,7 +1,7 @@
 import boto3
 import logging
-import logger_setup as logger_setup
-import aws_utilities as aws
+import app.logger_setup as logger_setup
+import app.aws_utilities as aws
 from datetime import date, timedelta
 
 

@@ -1,7 +1,7 @@
 import boto3
 import os
 import logging
-import logger_setup as logger_setup
+import app.logger_setup as logger_setup
 import json
 from datetime import datetime
 

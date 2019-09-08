@@ -1,5 +1,5 @@
 import logging
-import logger_setup
+import app.logger_setup as logger_setup
 import boto3
 import os
 logger = logging.getLogger(__name__)
@@ -8,7 +8,7 @@ logger_setup.set_logger_level(logger)
 logger_setup.set_logger_format(logger)
 
 
-def write_ssm_parameter_value(parameter_name, new_parameter_value, is_secure):
+def write_ssm_parameter_value_from_env(parameter_name, new_parameter_value, is_secure):
     """Write a parameter value to a given parameter name"""
     logger.info("Writing SSM parameter value for %s." % parameter_name)
     logger.debug("Searching for environmental variable.")

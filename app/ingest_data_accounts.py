@@ -1,7 +1,7 @@
 import logging
 import boto3
-import logger_setup as logger_setup
-import aws_utilities as aws
+import app.logger_setup as logger_setup
+import app.aws_utilities as aws
 import os
 import json
 from monzo import Monzo
