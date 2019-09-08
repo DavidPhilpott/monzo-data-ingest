@@ -6,3 +6,4 @@ venv/
 temp_token_swap.json
 temp_tokens.txt
 __pycache__/
+app.egg-info/
