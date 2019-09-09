@@ -1,5 +1,5 @@
 import logging
-import app.logger_setup
+import app.logger_setup as logger_setup
 import app.utilities as aws
 import requests
 import json
