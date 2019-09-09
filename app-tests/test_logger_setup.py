@@ -31,3 +31,11 @@ def test_set_logger_level_raises_value_error_with_bad_env_var():
     with pytest.raises(ValueError):
         logger_setup.set_logger_level(logger)
     return
+
+
+def test_set_logger_format_fmt_hardcoded_as_expected():
+    """Validate that the logger format is set to the hardcoded version"""
+    logger = logging.getLogger("TestLogger")
+    logger_setup.set_logger_format(logger)
+    assert logger.handlers[0].formatter._fmt == '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
+    return
