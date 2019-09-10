@@ -146,6 +146,8 @@ jobs:
     steps:
       - attach_workspace:
           at: *working_directory
+      - restore_cache:
+          key: repo-{{ .Environment.CIRCLE_SHA1 }}
       - *zip_requirements_package
       - persist_to_workspace:
           root: *working_directory
