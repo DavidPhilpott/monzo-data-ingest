@@ -163,7 +163,6 @@ jobs:
           name: Execute Unit Tests
           command: |
             source venv/bin/activate
-            python setup.py install
             pwd
             cd app
             pwd
@@ -179,7 +178,6 @@ jobs:
           name: Execute Integration Tests
           command: |
             source venv/bin/activate
-            python setup.py install
             py.test tests/integration-tests
 
   build-lambda-requirements:
