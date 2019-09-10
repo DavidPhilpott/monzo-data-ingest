@@ -128,14 +128,24 @@ jobs:
           paths:
             - ~/
 
-  build-lambda-requirements:
-    <<: *python_config    
+  install-requirements:
+    <<: *python_config
     steps:
       - restore_cache:
           key: repo-{{ .Environment.CIRCLE_SHA1 }}
       - *restore_requirements_cache
       - *install_app_dependencies
       - *save_requirements_cache
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - ./venv
+
+  build-lambda-requirements:
+    <<: *python_config    
+    steps:
+      - attach_workspace:
+          at: *working_directory
       - *zip_requirements_package
       - persist_to_workspace:
           root: *working_directory
