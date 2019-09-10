@@ -1,7 +1,6 @@
 """Setup script so for prepping test import"""
-
-from setuptools import setup
-setup(
+import setuptools
+setuptools.setup(
     name='app',
     packages=setuptools.find_packages(),
 )
