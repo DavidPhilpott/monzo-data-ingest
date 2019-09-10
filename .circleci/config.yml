@@ -163,10 +163,8 @@ jobs:
           name: Execute Unit Tests
           command: |
             source venv/bin/activate
-            pwd
-            cd app
-            pwd
-            cd..
+            PYTHONPATH="${PYTHONPATH}:/home/circleci/working/app
+            export PYTHONPATH
             py.test tests/unit-tests
 
   integration-testing:
