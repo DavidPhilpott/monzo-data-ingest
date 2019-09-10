@@ -1,5 +1,5 @@
 import logging
-import app.logger_setup as logger_setup
+import logger_setup as logger_setup
 import boto3
 import os
 logger = logging.getLogger(__name__)
