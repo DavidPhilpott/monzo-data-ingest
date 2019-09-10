@@ -201,9 +201,12 @@ workflows:
   deploy-infra-and-app: 
     jobs:
       - checkout-repo
-      - build-lambda-requirements:
+      - install-requirements:
           requires:
             - checkout-repo
+      - build-lambda-requirements:
+          requires:
+            - install-requirements
       - build-lambda-app:
           requires:
             - checkout-repo
