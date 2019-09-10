@@ -136,18 +136,50 @@ jobs:
       - *restore_requirements_cache
       - *install_app_dependencies
       - *save_requirements_cache
-      - persist_to_workspace:
-          root: *working_directory
+
+  install-test-requirements:
+    <<: *python_config
+    steps:
+      - restore_cache:
+          key: repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Install App Dependencies
+          command: |
+            source venv/bin/activate
+            pip3 install -r tests/test_requirements.txt
+      - save_cache:
+          key: test-ready-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - ./venv
+            - ~/ 
+
+  unit-testing:
+    <<: *python_config
+    steps:
+      - restore_cache:
+          key: test-ready-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Execute Unit Tests
+          command: |
+          source venv/bin/activate
+          py.test tests/unit-tests
+
+  integration-testing:
+    <<: *python_config
+    steps:
+      - restore_cache:
+          key: test-ready-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Execute Integration Tests
+          command: |
+          source venv/bin/activate
+          py.test tests/integration-tests
 
   build-lambda-requirements:
     <<: *python_config    
     steps:
-      - attach_workspace:
-          at: *working_directory
       - restore_cache:
           key: repo-{{ .Environment.CIRCLE_SHA1 }}
+      - *restore_requirements_cache
       - *zip_requirements_package
       - persist_to_workspace:
           root: *working_directory
@@ -206,6 +238,15 @@ workflows:
       - install-requirements:
           requires:
             - checkout-repo
+      - install-test-requirements:
+          requires:
+            - install-requirements
+      - unit-testing:
+          requires:
+            - install-test-requirements
+      - integration-testing:
+          requires:
+            - install-test-requirements
       - build-lambda-requirements:
           requires:
             - install-requirements
@@ -219,6 +260,8 @@ workflows:
       - terraform-apply:
           requires:
             - terraform-plan
+            - unit-testing
+            - integration-testing
 #      - terraform-destroy:
 #          requires:
 #            - terraform-apply
