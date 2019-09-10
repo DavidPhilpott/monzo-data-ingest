@@ -163,6 +163,7 @@ jobs:
           name: Execute Unit Tests
           command: |
             source venv/bin/activate
+            python setup.py
             py.test tests/unit-tests
 
   integration-testing:
@@ -174,6 +175,7 @@ jobs:
           name: Execute Integration Tests
           command: |
             source venv/bin/activate
+            python setup.py
             py.test tests/integration-tests
 
   build-lambda-requirements:
