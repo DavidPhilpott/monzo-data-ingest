@@ -176,6 +176,10 @@ jobs:
           command: |
             source venv/bin/activate
             python setup.py install
+            ls
+            cd app
+            ls
+            cd ..
             py.test tests/integration-tests
 
   build-lambda-requirements:
