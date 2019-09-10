@@ -3,5 +3,5 @@
 from setuptools import setup
 setup(
     name='app',
-    packages=['app', 'app.bootstrap_auth']
+    packages=['app']
 )
