@@ -160,8 +160,8 @@ jobs:
       - run:
           name: Execute Unit Tests
           command: |
-          source venv/bin/activate
-          py.test tests/unit-tests
+            source venv/bin/activate
+            py.test tests/unit-tests
 
   integration-testing:
     <<: *python_config
@@ -171,8 +171,8 @@ jobs:
       - run:
           name: Execute Integration Tests
           command: |
-          source venv/bin/activate
-          py.test tests/integration-tests
+            source venv/bin/activate
+            py.test tests/integration-tests
 
   build-lambda-requirements:
     <<: *python_config    
