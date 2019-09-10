@@ -1,6 +1,6 @@
 import mock
 import os
-import app.bootstrap_auth as bootstrap_auth
+import bootstrap_auth as bootstrap_auth
 from moto import mock_ssm
 import boto3
 
