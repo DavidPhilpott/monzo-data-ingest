@@ -3,6 +3,12 @@ import app.logger_setup as logger_setup
 import app.utilities as aws
 import requests
 
+global logger
+logger = logging.getLogger(__name__)
+logger.propagate = False
+logger_setup.set_logger_level(logger)
+logger_setup.set_logger_format(logger)
+
 
 def bootstrap_access_and_refresh_tokens(client_id, client_secret_id,
                                         redirect_uri, initial_access_code):
@@ -27,13 +33,6 @@ def bootstrap_access_and_refresh_tokens(client_id, client_secret_id,
 
 
 def main(event, context):
-    print("-- Instantiating logger --")
-    global logger
-    logger = logging.getLogger(__name__)
-    logger.propagate = False
-    logger_setup.set_logger_level(logger)
-    logger_setup.set_logger_format(logger)
-
     logger.info("-- Getting Parameter Values --")
     monzo_bootstrap_token = aws.get_ssm_parameter_value_from_env(parameter_name='monzo_bootstrap_token_parameter')
     client_id = aws.get_ssm_parameter_value_from_env(parameter_name='client_id_parameter')
