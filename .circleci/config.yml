@@ -142,8 +142,10 @@ jobs:
     steps:
       - restore_cache:
           key: repo-{{ .Environment.CIRCLE_SHA1 }}
+      - *restore_requirements_cache
+      - *install_app_dependencies
       - run:
-          name: Install App Dependencies
+          name: Install Test Dependencies
           command: |
             source venv/bin/activate
             pip3 install -r tests/test_requirements.txt
