@@ -110,15 +110,13 @@ zip_app_package: &zip_app_package
 
 restore_requirements_cache: &restore_requirements_cache
   restore_cache:
-    keys:
-      - requirements-{{checksum "app/requirements.txt" }}
-      - requirements-
+    key: requirements-{{checksum "app/requirements.txt" }}
 
 save_requirements_cache: &save_requirements_cache
   save_cache:
+    key: requirements-{{checksum "app/requirements.txt" }}
     paths:
       - ./venv
-    key: requirements-{{checksum "app/requirements.txt" }}
 
 jobs:
   build-lambda-requirements:
