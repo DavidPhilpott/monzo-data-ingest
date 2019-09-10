@@ -175,7 +175,6 @@ jobs:
           name: Execute Integration Tests
           command: |
             source venv/bin/activate
-            touch app/__init__.py
             python setup.py install
             py.test tests/integration-tests
 
