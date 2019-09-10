@@ -175,11 +175,8 @@ jobs:
           name: Execute Integration Tests
           command: |
             source venv/bin/activate
+            touch app/__init__.py
             python setup.py install
-            ls
-            cd app
-            ls
-            cd ..
             py.test tests/integration-tests
 
   build-lambda-requirements:
