@@ -164,6 +164,10 @@ jobs:
           command: |
             source venv/bin/activate
             python setup.py install
+            pwd
+            cd app
+            pwd
+            cd..
             py.test tests/unit-tests
 
   integration-testing:
