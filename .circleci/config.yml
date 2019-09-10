@@ -119,10 +119,20 @@ save_requirements_cache: &save_requirements_cache
       - ./venv
 
 jobs:
+  checkout-repo:
+    <<: *python_config
+    steps:
+      - checkout
+      - save_cache:
+          key: repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/
+
   build-lambda-requirements:
     <<: *python_config    
     steps:
-      - checkout
+      - restore_cache:
+          key: repo-{{ .Environment.CIRCLE_SHA1 }}
       - *restore_requirements_cache
       - *install_app_dependencies
       - *save_requirements_cache
@@ -135,7 +145,8 @@ jobs:
   build-lambda-app:
     <<: *python_config
     steps:
-      - checkout
+      - restore_cache:
+          key: repo-{{ .Environment.CIRCLE_SHA1 }}
       - *zip_app_package
       - persist_to_workspace:
           root: *working_directory
@@ -179,8 +190,13 @@ workflows:
   version: 1
   deploy-infra-and-app: 
     jobs:
-      - build-lambda-requirements
-      - build-lambda-app
+      - checkout-repo
+      - build-lambda-requirements:
+          requires:
+            - checkout-repo
+      - build-lambda-app:
+          requires:
+            - checkout-repo
       - terraform-plan:
           requires:
             - build-lambda-app
