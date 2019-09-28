@@ -6,6 +6,12 @@ import os
 import json
 from monzo import Monzo
 
+global logger
+logger = logging.getLogger(__name__)
+logger.propagate = False
+logger_setup.set_logger_level(logger)
+logger_setup.set_logger_format(logger)
+
 
 def get_monzo_client(access_key):
     """Create a Monzo client object"""
@@ -64,13 +70,6 @@ def write_data_to_s3(s3_client, bucket_name, target_path, data_to_write):
 
 
 def main(event, context):
-    print("-- Instantiating logger --")
-    global logger
-    logger = logging.getLogger(__name__)
-    logger.propagate = False
-    logger_setup.set_logger_level(logger)
-    logger_setup.set_logger_format(logger)
-
     logger.info("-- Getting Parameter Values --")
     access_key = aws.get_ssm_parameter_value_from_env(parameter_name='access_key_parameter')
     data_lake_bucket = os.getenv("data_lake_bucket_name")

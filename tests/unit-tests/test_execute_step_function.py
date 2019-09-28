@@ -1,4 +1,3 @@
-import mock
 import app.execute_step_function as execute_step_function
 import json
 from freezegun import freeze_time
