@@ -5,6 +5,12 @@ import logger_setup as logger_setup
 import json
 from datetime import datetime
 
+global logger
+logger = logging.getLogger(__name__)
+logger.propagate = False
+logger_setup.set_logger_level(logger)
+logger_setup.set_logger_format(logger)
+
 
 def execute_step_function(step_function_arn, step_function_execution_name, input_values):
     """Call a step function arn with a given execution name and input"""
@@ -55,13 +61,6 @@ def generate_execution_name(date_to_process):
 
 
 def main(event, context):
-    print("-- Instantiating logger --")
-    global logger
-    logger = logging.getLogger(__name__)
-    logger.propagate = False
-    logger_setup.set_logger_level(logger)
-    logger_setup.set_logger_format(logger)
-
     logger.info("-- Getting Parameter Values --")
     target_step_function_arn = os.getenv('target_step_function_arn')
     logger.info("Finished getting parameter values.")
