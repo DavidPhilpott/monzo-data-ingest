@@ -1,6 +1,7 @@
 import app.ingest_data_accounts as ingest_data_accounts
 import mock
 from moto import mock_s3
+import boto3
 
 
 @mock.patch("monzo.Monzo")
@@ -51,4 +52,23 @@ def test_get_s3_client():
     """Test wrapper for s3 client"""
     test_output = ingest_data_accounts.get_s3_client()
     assert str(test_output.__class__) == "<class 'botocore.client.S3'>"
+    return
+
+
+@mock_s3
+def test_write_data_to_s3():
+    """Test file is correctly written to S3"""
+    virtual_client = boto3.client("s3")
+    test_bucket_name = 'Test_Bucket'
+    test_target_path = 'TestPath'
+    test_data_to_write = 'TestData'
+    virtual_client.create_bucket(Bucket=test_bucket_name)
+    ingest_data_accounts.write_data_to_s3(s3_client=virtual_client,
+                                          bucket_name=test_bucket_name,
+                                          target_path=test_target_path,
+                                          data_to_write=test_data_to_write)
+    virtual_resource_client = boto3.resource('s3')
+    output_object = virtual_resource_client.Object(test_bucket_name, test_target_path)
+    test_output_data = output_object.get()['Body'].read().decode('utf-8')
+    assert test_output_data == test_data_to_write
     return
