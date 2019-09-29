@@ -4,6 +4,12 @@ import utilities as aws
 import requests
 import json
 
+global logger
+logger = logging.getLogger(__name__)
+logger.propagate = False
+logger_setup.set_logger_level(logger)
+logger_setup.set_logger_format(logger)
+
 
 def refresh_access_key(client_id, client_secret_id, refresh_token):
     """Submit refresh token to Monzo in exchange for a new access key and refresh token"""
@@ -22,13 +28,6 @@ def refresh_access_key(client_id, client_secret_id, refresh_token):
 
 
 def main(event, context):
-    print("-- Instantiating logger --")
-    global logger
-    logger = logging.getLogger(__name__)
-    logger.propagate = False
-    logger_setup.set_logger_level(logger)
-    logger_setup.set_logger_format(logger)
-
     logger.info("-- Getting Parameter Values --")
     client_id = aws.get_ssm_parameter_value_from_env(parameter_name='client_id_parameter')
     client_secret_id = aws.get_ssm_parameter_value_from_env(parameter_name='client_secret_id_parameter')
