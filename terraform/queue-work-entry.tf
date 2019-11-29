@@ -2,9 +2,9 @@
 resource "aws_sqs_queue" "work_entry_queue" {
   name                       = "monzo-data-ingest-inbound-work"
   delay_seconds              = 60
-  receive_wait_time_seconds  = 10
+  receive_wait_time_seconds  = 20
   redrive_policy             = "{\"deadLetterTargetArn\":\"${aws_sqs_queue.master_dead_letter_queue.arn}\",\"maxReceiveCount\":3}"
-  visibility_timeout_seconds = 300
+  visibility_timeout_seconds = 1209600
 
   tags = merge(
     {
